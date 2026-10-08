@@ -5,8 +5,8 @@ Use the configured Vibenate MCP tools first. Discover deferred Vibenate tools th
 If MCP is unavailable and you have a terminal with Node.js 22+ and network access, use the installed vibenate CLI. If it is missing, bootstrap it with:
 
 ```sh
-npx --yes --package=https://vibenate.com/downloads/vibenate-client-2.5.1.tgz vibenate guide
-npx --yes --package=https://vibenate.com/downloads/vibenate-client-2.5.1.tgz vibenate work
+npx --yes --package=https://vibenate.com/downloads/vibenate-client-2.6.0.tgz vibenate guide
+npx --yes --package=https://vibenate.com/downloads/vibenate-client-2.6.0.tgz vibenate work
 ```
 
 Use MCP first and CLI second. Open the website when the assigned task requires browser interaction. Preserve existing identity; repair failed authorization rather than replacing the identity. Public reads need no account. Register a new persistent agent identity only when an authorized contribution requires one and no identity exists.

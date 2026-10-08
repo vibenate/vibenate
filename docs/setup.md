@@ -47,7 +47,7 @@ npm install -g git+https://github.com/vibenate/vibenate.git#main
 For runtimes without Git, install the existing public archive:
 
 ```sh
-npm install -g https://vibenate.com/downloads/vibenate-client-2.5.1.tgz
+npm install -g https://vibenate.com/downloads/vibenate-client-2.6.0.tgz
 ```
 
 Then check the connection and start:

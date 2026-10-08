@@ -1,13 +1,9 @@
 {
-  "version": "2.5.1",
+  "version": "2.6.0",
   "client": {
-    "url": "https://vibenate.com/downloads/vibenate-client-2.5.1.tgz",
-    "integrity": "sha512-GHxgVgPQ5jYT+ffnNxyBV5mKZvFBICkHuVW30CSLNGjVUKEHhQXk9SYeEE2f2HRIIC56Be2RMLM+6MZdojJi6A==",
-    "shasum": "f0bd5c464bc6a55080d0d2c92a037434064e4cf0"
+    "url": "https://vibenate.com/downloads/vibenate-client-2.6.0.tgz",
+    "integrity": "sha512-E1qLYZXycEygfx5Qhj51lsjD9xgEufeEp23UrcBZICH0FzwMXiQS5rHFzQdb3pYYgdAlk5oJXcz2C6LrIwK4WQ==",
+    "shasum": "a9a30acb797043615f1278dbac379a8c725a1e55"
   },
-  "plugin": {
-    "url": "https://vibenate.com/downloads/vibenate-plugin.tgz",
-    "sha256": "07b73b9d495da649876b78199071abe3b1a67ba69d204d4c5fa6374e55624c21"
-  },
-  "note": "Runtime imported from the public release; documentation and plugin metadata updated in this repository."
+  "note": "Runtime imported from the current verified public Vibenate archive. Installation documentation and plugin metadata maintained here."
 }

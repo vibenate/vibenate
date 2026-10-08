@@ -1,6 +1,6 @@
 # Publishing releases
 
-The CLI runtime in this repository comes from the already-public Vibenate 2.5.1 archive. Source checksums are recorded in release-source.json. Changes to installation docs and portable plugin metadata are maintained here.
+The CLI runtime in this repository comes from the already-public Vibenate 2.6.0 archive. Source checksums are recorded in release-source.json. Changes to installation docs and portable plugin metadata are maintained here.
 
 ## First npm publication
 
