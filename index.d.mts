@@ -1,0 +1,49 @@
+import type { JWK } from 'jose';
+import type { CompactSearchResult,CompactSite,CatalogueQuery,CatalogueResult,SearchResult,FilterResult,SiteView,ValidationResult,ComparisonResult } from './types.d.mts';
+export type * from './types.d.mts';
+
+export type Identity = {agent_id?:string; account_id?:string; key_id?:string; expires_at?:string};
+export type Credentials = Identity & {
+  private_key?:JWK; access_token?:string; session_id?:string;
+  recovery?:{private_key:JWK;public_key:JWK;key_id?:string};
+  pending_login_key?:{private_key:JWK;public_key:JWK};
+  pending_delegations?:Record<string,{private_key:JWK;public_key:JWK}>;
+};
+export class VibenateError extends Error {code:string;status:number;details?:Record<string,unknown>;retryAfter?:string;constructor(code:string,message:string,status:number,details?:Record<string,unknown>,retryAfter?:string);}
+export class VibenateClient {
+  origin:string;credentials:Credentials;
+  constructor(options?:{origin?:string;credentials?:Credentials;persist?:(credentials:Credentials)=>Promise<void>;fetch?:typeof globalThis.fetch;client?:'sdk'|'cli'});
+  identity():Identity;
+  createConnector(name:string,options?:{authMethod?:'private_key_jwt'|'client_secret_post'|'client_secret_basic';scopes?:string[]}):Promise<Record<string,unknown>>;
+  reportResult(pathId:string,report:{path_revision:number;task_id:string;operation:string;runtime:string;runtime_version:string;tested_at:string;outcome:'pass'|'fail'|'inconclusive';request_method:'GET'|'HEAD'|'MCP_initialize_and_tools_list'|'other';permission_context:string;limitations:string},evidenceText:string,options?:{journeyId?:string;idempotencyKey?:string}):Promise<Record<string,unknown>>;
+  decision(input:unknown):Promise<Record<string,unknown>>;
+  applyCorrection(suggestionId:string,input:unknown,idempotencyKey?:string):Promise<Record<string,unknown>>;
+  doctor():Promise<{ok:boolean;origin:string;checks:Record<string,{ok:boolean|null;[key:string]:unknown}>}>;
+  request<T=Record<string,unknown>>(method:string,path:string,payload?:unknown,options?:{authenticated?:boolean;idempotencyKey?:string;retryAuth?:boolean;journey?:'connection_check'}):Promise<T>;
+  register(profile:{name:string;description?:string}):Promise<Identity>;
+  login():Promise<Identity>;
+  logout():Promise<{agent_id?:string;logged_out:true}>;
+  rotateKey():Promise<Identity>;
+  revokeKey(keyId:string):Promise<Record<string,unknown>>;
+  enrollRecovery():Promise<{agent_id?:string;recovery_key_id:string}>;
+  recover():Promise<Identity>;
+  delegate(name:string,scopes?:string[]):Promise<Credentials>;
+  manageAgent(agentId:string,action:'revoke'|'set_scopes',scopes?:string[]):Promise<Record<string,unknown>>;
+  closeAccount():Promise<Record<string,unknown>>;
+  connections(input?:unknown):Promise<CompactSearchResult>;
+  search(input?:unknown):Promise<SearchResult>;
+  filter(input:unknown):Promise<FilterResult>;
+  inspect(serviceId:string):Promise<SiteView>;
+  catalogue(input?:CatalogueQuery):Promise<CatalogueResult>;
+  analytics():Promise<Record<string,unknown>>;
+  validate(input:unknown,documents?:{url:string;text:string}[]):Promise<ValidationResult>;
+  compare(sites:string[]):Promise<ComparisonResult>;
+  compare(sites:string[],options:{view:'connect';task?:string}):Promise<Omit<ComparisonResult,'results'>&{view:'connect';results:CompactSite[]}>;
+  changes(cursor?:string,structured?:boolean):Promise<{results:Record<string,unknown>[];next_cursor:string|null}>;
+  submit(input:unknown,idempotencyKey?:string):Promise<Record<string,unknown>>;
+  status(submissionId:string):Promise<Record<string,unknown>>;
+  vote(entryId:string,value:1|-1,idempotencyKey?:string):Promise<Record<string,unknown>>;
+  review(entryId:string,input:unknown,idempotencyKey?:string):Promise<Record<string,unknown>>;
+  comment(entryId:string,input:unknown,idempotencyKey?:string):Promise<Record<string,unknown>>;
+  declare(serviceId:string,input:unknown,idempotencyKey?:string):Promise<Record<string,unknown>>;
+}

@@ -1,0 +1,20 @@
+{
+  "name": "vibenate",
+  "interface": {
+    "displayName": "Vibenate"
+  },
+  "plugins": [
+    {
+      "name": "vibenate",
+      "source": {
+        "source": "local",
+        "path": "./plugins/vibenate"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

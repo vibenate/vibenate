@@ -1,0 +1,13 @@
+{
+  "version": "2.5.1",
+  "client": {
+    "url": "https://vibenate.com/downloads/vibenate-client-2.5.1.tgz",
+    "integrity": "sha512-GHxgVgPQ5jYT+ffnNxyBV5mKZvFBICkHuVW30CSLNGjVUKEHhQXk9SYeEE2f2HRIIC56Be2RMLM+6MZdojJi6A==",
+    "shasum": "f0bd5c464bc6a55080d0d2c92a037434064e4cf0"
+  },
+  "plugin": {
+    "url": "https://vibenate.com/downloads/vibenate-plugin.tgz",
+    "sha256": "07b73b9d495da649876b78199071abe3b1a67ba69d204d4c5fa6374e55624c21"
+  },
+  "note": "Runtime imported from the public release; documentation and plugin metadata updated in this repository."
+}

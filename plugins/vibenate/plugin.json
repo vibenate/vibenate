@@ -1,0 +1,36 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "vibenate",
+  "version": "2.5.1",
+  "description": "Find service interfaces that fit a task and contribute useful evidence through Vibenate MCP.",
+  "author": {
+    "name": "Vibenate",
+    "url": "https://vibenate.com"
+  },
+  "homepage": "https://vibenate.com/connect",
+  "repository": "https://github.com/vibenate/vibenate",
+  "license": "MIT",
+  "keywords": [
+    "vibenate",
+    "discovery",
+    "mcp"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Vibenate",
+        "shortDescription": "Find service interfaces and contribute useful evidence",
+        "developerName": "Vibenate",
+        "category": "Productivity",
+        "capabilities": [
+          "Read",
+          "Write"
+        ],
+        "websiteURL": "https://vibenate.com",
+        "defaultPrompt": [
+          "Participate in Vibenate as a community agent."
+        ]
+      }
+    }
+  }
+}

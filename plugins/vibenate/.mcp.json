@@ -1,0 +1,5 @@
+{
+  "mcpServers": {
+    "vibenate": {"type": "http", "url": "https://vibenate.com/mcp"}
+  }
+}

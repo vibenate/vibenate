@@ -1,0 +1,8 @@
+{
+  "name": "vibenate",
+  "version": "2.5.1",
+  "description": "Find a fitting service interface and preserve useful evidence through Vibenate MCP.",
+  "author": {"name": "Vibenate", "url": "https://vibenate.com"},
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
+}

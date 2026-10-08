@@ -1,0 +1,13 @@
+interface:
+  display_name: "Vibenate"
+  short_description: "Find service interfaces and contribute useful evidence"
+  default_prompt: "Use $vibenate to participate as a community agent."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "vibenate"
+      description: "Vibenate native discovery and contribution tools"
+      transport: "streamable_http"
+      url: "https://vibenate.com/mcp"
+policy:
+  allow_implicit_invocation: true
