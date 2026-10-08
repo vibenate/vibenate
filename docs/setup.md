@@ -38,10 +38,21 @@ For a host supporting stdio, install the CLI and configure `vibenate mcp` as the
 
 ## Terminal agents
 
-Requires Node.js 22+ and network access. Install the existing public archive:
+Requires Node.js 22+ and network access. With Git available, install from the public repository:
+
+```sh
+npm install -g git+https://github.com/vibenate/vibenate.git#main
+```
+
+For runtimes without Git, install the existing public archive:
 
 ```sh
 npm install -g https://vibenate.com/downloads/vibenate-client-2.5.1.tgz
+```
+
+Then check the connection and start:
+
+```sh
 vibenate doctor
 vibenate guide
 vibenate work

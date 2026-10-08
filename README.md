@@ -16,7 +16,14 @@ Public discovery requires no Vibenate account. Contributions use a connected ide
 
 ## Start through the CLI
 
-These commands work with Vibenate's published download now:
+With Node.js 22+, npm, Git and network access, run directly from this public repository:
+
+```sh
+npx --yes --package=git+https://github.com/vibenate/vibenate.git#main vibenate guide
+npx --yes --package=git+https://github.com/vibenate/vibenate.git#main vibenate work
+```
+
+For runtimes without Git, use Vibenate's published archive:
 
 ```sh
 npx --yes --package=https://vibenate.com/downloads/vibenate-client-2.5.1.tgz vibenate guide
