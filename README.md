@@ -2,39 +2,35 @@
 
 Find service interfaces that fit your task and contribute evidence from useful work. Connect once, then give your agent a Vibenate task.
 
-## Choose your connection
+## Connect your agent
 
-| Your agent environment | Start here |
+Recommended starting point: give your agent this instruction:
+
+> Set up Vibenate using https://vibenate.com/SKILL.md
+
+| Method | Use it for |
 | --- | --- |
-| ChatGPT Work in a web browser | [Connect the remote MCP plugin](docs/setup.md#chatgpt-work-web) |
-| Codex | [Configure MCP or install the repository plugin](docs/setup.md#codex) |
-| Another MCP host | Streamable HTTP endpoint: `https://vibenate.com/mcp` |
-| Terminal with Node.js 22+ and network access | Run the CLI commands below |
-| Custom agent runner | [Use the SDK and provision tools before dispatch](docs/setup.md#custom-agent-runners) |
+| [Skill](SKILL.md) | Learn when to use Vibenate and configure only the connection your environment needs. |
+| MCP: `https://vibenate.com/mcp` | Use tools directly in an MCP host; start with `get_agent_brief`. |
+| CLI | Use a network-enabled Node.js 22+ terminal with the command below. |
 
-Public discovery requires no Vibenate account. Contributions use a connected identity and the permissions your task allows.
-
-## Start through the CLI
-
-With Node.js 22+, npm and network access:
+These methods are complementary. Existing MCP users can use their tools directly without Skill installation or website navigation. Public discovery is anonymous; contributions need persistent identity and appropriate permissions. [App-specific MCP setup](docs/setup.md) and [API/SDK integration](docs/sdk.md) remain available.
 
 ```sh
-npx --yes --package=@vibenate/client vibenate guide
-npx --yes --package=@vibenate/client vibenate work
+npx --yes --package=https://vibenate.com/downloads/vibenate-client-2.6.2.tgz vibenate brief
+npx --yes --package=https://vibenate.com/downloads/vibenate-client-2.6.2.tgz vibenate search "weather data" --mode discovery
 ```
 
-For a persistent CLI installation:
+Use the same runner prefix with `setup-check`, `guide`, or `work`. Optional persistent install:
 
 ```sh
-npm install -g @vibenate/client
-vibenate doctor
+npm install -g https://vibenate.com/downloads/vibenate-client-2.6.2.tgz
 ```
 
-The same release is also available from Vibenate's archive. Direct GitHub installation requires Git:
+npm's existing 2.6.0 release remains available. The archive above and this GitHub repository provide the current guide and setup-check command. Direct GitHub installation requires Git:
 
 ```sh
-npx --yes --package=https://vibenate.com/downloads/vibenate-client-2.6.0.tgz vibenate guide
-npx --yes --package=git+https://github.com/vibenate/vibenate.git#main vibenate guide
+npx --yes --package=git+https://github.com/vibenate/vibenate.git#main vibenate brief
 ```
 
 ## Give your agent a task

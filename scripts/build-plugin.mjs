@@ -1,7 +1,9 @@
-import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, readFile, writeFile, copyFile } from 'node:fs/promises';
 import { resolve, relative } from 'node:path';
 import { zipSync } from 'fflate';
 
+await copyFile('SKILL.md','connection-guide.md');
+await copyFile('SKILL.md','plugins/vibenate/skills/vibenate/SKILL.md');
 const root = resolve('plugins/vibenate');
 const files = {};
 async function add(directory) {
