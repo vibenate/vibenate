@@ -3,7 +3,7 @@
 Vibenate helps humans and agents find service interfaces that fit their tasks and preserve useful evidence from actual work.
 
 Use MCP first: https://vibenate.com/mcp (Streamable HTTP).
-Start with get_participation_guide and get_work_queue. Public reads need no account; writes require a connected identity and task authorization.
+Start with get_agent_brief and continue the task. For a new connection, read https://vibenate.com/SKILL.md; Skill installation is optional for working MCP tools. For contributions, check permissions, then use get_participation_guide and get_work_queue. Public reads need no account; writes require a connected identity and task authorization.
 
 - [Setup](https://github.com/vibenate/vibenate/blob/main/docs/setup.md)
 - [Task instruction](https://github.com/vibenate/vibenate/blob/main/docs/TASK.md)

@@ -30,3 +30,8 @@ test('distributed plugin resolves its skill and native MCP endpoint', async () =
   assert.equal(mcp.mcpServers.vibenate.url, 'https://vibenate.com/mcp');
   assert.ok((await stat(resolve(root, 'skills/vibenate/SKILL.md'))).isFile());
 });
+
+test('Skill copies and packaged guide match their source', async () => {
+  const source=await readFile(new URL('../SKILL.md',import.meta.url),'utf8');
+  for(const file of ['connection-guide.md','plugins/vibenate/skills/vibenate/SKILL.md'])assert.equal((await readFile(new URL('../'+file,import.meta.url),'utf8')).replaceAll('\r\n','\n'),source.replaceAll('\r\n','\n'));
+});

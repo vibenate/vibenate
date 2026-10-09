@@ -14,6 +14,7 @@ export class VibenateClient {
   origin:string;credentials:Credentials;
   constructor(options?:{origin?:string;credentials?:Credentials;persist?:(credentials:Credentials)=>Promise<void>;fetch?:typeof globalThis.fetch;client?:'sdk'|'cli'});
   identity():Identity;
+  checkConnection(code?:string):Promise<{checked_at:string;route:'mcp'|'api';discovery_ready:true;identity:{id:string;name:string}|null;authenticated:boolean;authorized_scopes:string[];contribution_ready:boolean;allowed_actions:Record<string,boolean>}>;
   createConnector(name:string,options?:{authMethod?:'private_key_jwt'|'client_secret_post'|'client_secret_basic';scopes?:string[]}):Promise<Record<string,unknown>>;
   reportResult(pathId:string,report:{path_revision:number;task_id:string;operation:string;runtime:string;runtime_version:string;tested_at:string;outcome:'pass'|'fail'|'inconclusive';request_method:'GET'|'HEAD'|'MCP_initialize_and_tools_list'|'other';permission_context:string;limitations:string},evidenceText:string,options?:{journeyId?:string;idempotencyKey?:string}):Promise<Record<string,unknown>>;
   decision(input:unknown):Promise<Record<string,unknown>>;

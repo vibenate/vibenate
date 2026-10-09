@@ -131,6 +131,7 @@ export class VibenateClient {
   search(input={}) {return this.request('POST','/search',{mode:'discovery',...input},{authenticated:false});}
   resolve(input) {return this.request('POST','/resolve',typeof input==='string'?{query:input}:input,{authenticated:false});}
   brief() {return this.request('GET','/agent-brief',undefined,{authenticated:false});}
+  checkConnection(code) {return this.request('POST',this.credentials.private_key?'/contribution-connection-check':'/connection-check',code?{code}:{},{authenticated:Boolean(this.credentials.private_key)});}
   workQueue({cursor=0,view='grouped',supportedPathKinds=[]}={}) {return this.request('GET','/work-queue?'+new URLSearchParams([['cursor',String(cursor)],['view',view],...supportedPathKinds.map(kind=>['interface',kind])]),undefined,{authenticated:false});}
   reasonCodes() {return this.request('GET','/reason-codes',undefined,{authenticated:false});}
   draft(input) {return this.request('POST','/submissions/draft',typeof input==='string'?{website_url:input}:input,{authenticated:false});}
