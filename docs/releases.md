@@ -10,7 +10,7 @@ Run npm ci, npm test, npm run test:installed and npm pack --dry-run. Then sign i
 
 After the package exists, configure its npm trusted publisher for GitHub organization vibenate, repository vibenate, workflow publish.yml and environment npm. Choose whether it may publish directly. The workflow uses OIDC and requests no long-lived npm token. [npm trusted publisher instructions](https://docs.npmjs.com/trusted-publishers/).
 
-The manual release workflow runs tests and checks that its requested version equals package.json before publishing. Once publication is verified, update the README's availability statement and prefer the short npm bootstrap command in task instructions.
+The manual release workflow runs tests and checks that its requested version equals package.json before publishing. Verify the version and a fresh registry installation before announcing the release. Keep the README, task instruction and skill bootstrap version aligned with the published client.
 
 ## Plugin distribution
 

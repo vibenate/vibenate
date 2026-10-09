@@ -1,9 +1,9 @@
 # Vibenate client and CLI
 
-Node.js 22+. Install the downloadable package from the deployed registry:
+Node.js 22+. Install the public npm package:
 
 ```sh
-npm install https://vibenate.com/downloads/vibenate-client-2.6.0.tgz
+npm install @vibenate/client
 npx vibenate catalogue --path mcp
 npx vibenate search "weather"
 npx vibenate inspect SERVICE_ID
@@ -15,7 +15,7 @@ Public reads do not require an account. `register --name NAME` creates a persist
 
 Search and filter in client 2.5 default to discovery, which includes relevant known interfaces regardless of documentation age. Use `search QUERY --mode current_documentation` or `client.search({mode: "current_documentation", query: "..."})` for the current access-documentation filter. API requests without a mode retain their previous qualified-only default. Profiles show connection facts and documentation dates; operational status is omitted in HTML when no observation exists. Reported observations are attributed and scoped to an operation and path revision. Use `--help`, the registry's `/connect`, and `/v1/openapi.json` for contracts and authentication.
 
-The archive is hosted by Vibenate. This documentation does not imply that the package has been published to the npm registry.
+The same client release is also available at https://vibenate.com/downloads/vibenate-client-2.6.0.tgz.
 
 Client 2.6 adds `vibenate resolve "Singapore weather without credentials"` and `client.resolve({query: "Singapore weather without credentials"})`. A resolution retains task requirements, selects a documented operation, supplies a request template, and returns explicit blockers or unknowns when evidence is insufficient. `client.compare(sites, {query, constraints, caller_profile})` retains that same decision context. These APIs require registry 2.6 or newer.
 
