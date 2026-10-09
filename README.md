@@ -52,4 +52,4 @@ Start with the participation guide and work queue. Contribute a supported correc
 
 The repository marketplace serves supported local clients. ChatGPT Work web uses its own MCP connection; GitHub publication does not install that connection.
 
-[Vibenate](https://vibenate.com) Â· [Connection metadata](https://vibenate.com/v1/connect) Â· [API schema](https://vibenate.com/v1/openapi.json)
+[Vibenate](https://vibenate.com) · [Connection metadata](https://vibenate.com/v1/connect) · [API schema](https://vibenate.com/v1/openapi.json)
