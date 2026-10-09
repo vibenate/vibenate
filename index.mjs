@@ -34,12 +34,13 @@ export class VibenateClient {
     if(['POST','PUT','PATCH','DELETE'].includes(method)&&authenticated)headers['idempotency-key']=idempotencyKey||crypto.randomUUID();
     if(authenticated&&(recoveredAuth||this.resumedIdentity))headers['x-vibenate-journey']=recoveredAuth?'recovered_auth':'stored_identity';
     if(authenticated&&journey==='connection_check')headers['x-vibenate-journey']='connection_check';
-    const sourcePreparation=['/documentation/inspect','/submissions/preflight'].includes(path);
-    const response=await this.fetcher(`${this.origin}/v1${path}`,{method,headers,body:payload===undefined?undefined:JSON.stringify(payload),signal:AbortSignal.timeout(sourcePreparation?60000:30000)});
-    const data=await response.json();
+    const sourcePreparation=['/documentation/inspect','/submissions/preflight','/submissions/draft'].includes(path);
+    let response,data;
+    try{response=await this.fetcher(`${this.origin}/v1${path}`,{method,headers,body:payload===undefined?undefined:JSON.stringify(payload),signal:AbortSignal.timeout(sourcePreparation?60000:30000)});data=await response.json();}
+    catch(error){const write=authenticated&&['POST','PUT','PATCH','DELETE'].includes(method)&&path!=='/mutations/status';throw new VibenateError(write?'WRITE_OUTCOME_UNKNOWN':'NETWORK_ERROR',write?'The write may have committed. Reconcile its mutation key or retry the same payload and key.':'The registry response could not be read. Retry with backoff.',0,{method,path,...write?{idempotency_key:headers['idempotency-key'],next_actions:[{action:'reconcile_mutation',method:'POST',url:'/v1/mutations/status',body:{idempotency_key:headers['idempotency-key']}}]}:{retryable:true}});}
     if(!response.ok) {
       if(response.status===401 && authenticated && retryAuth && this.credentials.private_key) {await this.login();return this.request(method,path,payload,{authenticated,idempotencyKey:headers['idempotency-key'],retryAuth:false,recoveredAuth:true,journey});}
-      throw new VibenateError(data.error?.code||'HTTP_ERROR',data.error?.message||'Registry request failed',response.status,data.error,response.headers.get('retry-after'));
+      throw new VibenateError(data.error?.code||'HTTP_ERROR',data.error?.message||'Registry request failed',response.status,{...data.error,next_actions:data.next_actions||[]},response.headers.get('retry-after'));
     }
     return data;
   }
@@ -128,13 +129,25 @@ export class VibenateClient {
   manageAgent(agentId,action,scopes) {return this.security(`/accounts/me/agents/${encodeURIComponent(agentId)}`,'manage_agent',{agent_id:agentId,action,...scopes?{scopes}:{}},undefined,'PATCH');}
   async closeAccount() {const result=await this.security('/accounts/me','close',{confirm:'close'},undefined,'DELETE');delete this.credentials.access_token;delete this.credentials.expires_at;await this.persist(this.credentials);return result;}
   search(input={}) {return this.request('POST','/search',{mode:'discovery',...input},{authenticated:false});}
+  resolve(input) {return this.request('POST','/resolve',typeof input==='string'?{query:input}:input,{authenticated:false});}
+  brief() {return this.request('GET','/agent-brief',undefined,{authenticated:false});}
+  workQueue({cursor=0,view='grouped',supportedPathKinds=[]}={}) {return this.request('GET','/work-queue?'+new URLSearchParams([['cursor',String(cursor)],['view',view],...supportedPathKinds.map(kind=>['interface',kind])]),undefined,{authenticated:false});}
+  reasonCodes() {return this.request('GET','/reason-codes',undefined,{authenticated:false});}
+  draft(input) {return this.request('POST','/submissions/draft',typeof input==='string'?{website_url:input}:input,{authenticated:false});}
+  watch(input,idempotencyKey) {return this.request('POST','/watchlist',input,{idempotencyKey});}
+  watchlist() {return this.request('GET','/watchlist');}
+  unwatch(id,idempotencyKey) {return this.request('DELETE','/watchlist/'+encodeURIComponent(id),undefined,{idempotencyKey});}
+  dependencyChanges(after='0') {return this.request('GET','/watchlist/changes?after='+encodeURIComponent(after));}
+  filteredChanges({after='0',serviceIds=[],pathIds=[],revision,limit}={}) {return this.request('GET','/changes?'+new URLSearchParams([['after',after],...serviceIds.map(id=>['service',id]),...pathIds.map(id=>['path',id]),...Object.entries({revision,limit}).filter(([,value])=>value!==undefined).map(([key,value])=>[key,String(value)])]),undefined,{authenticated:false});}
+  outcomes(pathId,{revision,operation}={}) {return this.request('GET','/paths/'+encodeURIComponent(pathId)+'/outcomes?'+new URLSearchParams(Object.entries({revision,operation}).filter(([,value])=>value!==undefined)),undefined,{authenticated:false});}
+  reconcileMutation(idempotencyKey,operation) {return this.request('POST','/mutations/status',{idempotency_key:idempotencyKey,...operation?{operation}:{} });}
   filter(input) {return this.request('POST','/filter',{mode:'discovery',...input},{authenticated:false});}
   inspect(serviceId) {return this.request('GET',`/sites/${encodeURIComponent(serviceId)}`,undefined,{authenticated:false});}
   catalogue(input={}) {return this.request('GET','/catalogue?'+new URLSearchParams(Object.entries(input).filter(([,value])=>value!==undefined).map(([key,value])=>[key,String(value)])),undefined,{authenticated:false});}
   analytics() {return this.request('GET','/analytics',undefined,{authenticated:false});}
   validate(input,documents) {return this.request('POST','/submissions/validate',{submission:input,...documents?{documents}:{}},{authenticated:false});}
   connections(input={}) {return this.search({view:'connect',...input});}
-  compare(sites,options={}) {return this.request('GET','/compare?'+new URLSearchParams([...sites.map(site=>['site',site]),...Object.entries(options).filter(([,v])=>v!==undefined)]),undefined,{authenticated:false});}
+  compare(sites,options={}) {if(options.query||options.constraints||options.caller_profile)return this.request('POST','/compare',{sites,...options,...options.task?{constraints:{...options.constraints,tasks:[options.task]},task:undefined}:{}},{authenticated:false});return this.request('GET','/compare?'+new URLSearchParams([...sites.map(site=>['site',site]),...Object.entries(options).filter(([,v])=>v!==undefined)]),undefined,{authenticated:false});}
   changes(cursor,structured=true) {return this.request('GET','/changes?'+new URLSearchParams({...cursor?{cursor}:{},...structured?{format:'structured'}:{}}),undefined,{authenticated:false});}
   submit(input,idempotencyKey) {return this.request('POST','/submissions',input,{idempotencyKey});}
   status(submissionId) {return this.request('GET',`/submissions/${encodeURIComponent(submissionId)}`,undefined,{authenticated:false});}

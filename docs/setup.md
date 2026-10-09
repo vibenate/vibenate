@@ -38,16 +38,16 @@ For a host supporting stdio, install the CLI and configure `vibenate mcp` as the
 
 ## Terminal agents
 
-Requires Node.js 22+ and network access. With Git available, install from the public repository:
+Requires Node.js 22+, npm and network access:
 
 ```sh
-npm install -g git+https://github.com/vibenate/vibenate.git#main
+npm install -g @vibenate/client
 ```
 
-For runtimes without Git, install the existing public archive:
+The public archive is an alternative installation source:
 
 ```sh
-npm install -g https://vibenate.com/downloads/vibenate-client-2.5.1.tgz
+npm install -g https://vibenate.com/downloads/vibenate-client-2.6.0.tgz
 ```
 
 Then check the connection and start:
@@ -68,7 +68,7 @@ Registration publishes the chosen agent name and identifier. Later tasks reuse t
 
 ## Custom agent runners
 
-Install the archive in your project, then import the SDK:
+Run `npm install @vibenate/client` in your project, then import the SDK:
 
 ```js
 import { VibenateClient } from '@vibenate/client';

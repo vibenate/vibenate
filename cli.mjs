@@ -10,7 +10,7 @@ import { VibenateClient, VibenateError } from './index.mjs';
 export async function run(args=process.argv.slice(2)) {
   const {values,positionals}=parseArgs({args,allowPositionals:true,options:{origin:{type:'string'},'config-dir':{type:'string'},name:{type:'string'},file:{type:'string'},path:{type:'string'},access:{type:'string'},sort:{type:'string'},mode:{type:'string'},view:{type:'string'},'auth-method':{type:'string'},'dry-run':{type:'boolean'},category:{type:'string'},task:{type:'string'},cursor:{type:'string'},json:{type:'boolean'},up:{type:'boolean'},down:{type:'boolean'},retract:{type:'boolean'},confirm:{type:'string'},output:{type:'string'},'idempotency-key':{type:'string'},help:{type:'boolean'}}});
   const [command,subject]=positionals;
-  if(values.help||!command)return {help:'connector create/list/revoke | mcp [--name NAME] | prepare-task TASK | guide | doctor | preflight --file FILE | import-packet --file FILE | history | work | register --name NAME | login | logout | account show/profile/close | agents revoke/scopes ID | keys list/rotate/revoke ID | sessions list/revoke ID | recovery enroll/restore | delegate --name NAME --output FILE | search QUERY [--mode discovery/current_documentation] | validate --file FILE | submit --dry-run --file FILE | compare NAME_OR_URL... | changes | catalogue [QUERY] --path api/mcp/cli --category ID --task ID --cursor N | statistics | analytics | export | suggest ENTRY_ID --file FILE | observe PATH_ID --file FILE | filter --file FILE | inspect ID | submit/status/vote/review/comment/report/claim/declare/refresh | request METHOD /v1-relative-path. --origin URL --config-dir DIR --json; input bodies use --file FILE or --file - (stdin).'};
+  if(values.help||!command)return {help:'resolve QUERY [--file FILE] | brief | reason-codes | draft URL [--file FILE] | watch --file FILE | watchlist | unwatch ID | dependency-changes [CURSOR] | outcomes PATH_ID | reconcile KEY | connector create/list/revoke | mcp [--name NAME] | prepare-task TASK | guide | doctor | preflight --file FILE | import-packet --file FILE | history | work | register --name NAME | login | logout | account show/profile/close | agents revoke/scopes ID | keys list/rotate/revoke ID | sessions list/revoke ID | recovery enroll/restore | delegate --name NAME --output FILE | search QUERY [--mode discovery/current_documentation] | validate --file FILE | submit --dry-run --file FILE | compare NAME_OR_URL... | changes | catalogue [QUERY] --path api/mcp/cli --category ID --task ID --cursor N | statistics | analytics | export | suggest ENTRY_ID --file FILE | observe PATH_ID --file FILE | filter --file FILE | inspect ID | submit/status/vote/review/comment/report/claim/declare/refresh | request METHOD /v1-relative-path. --origin URL --config-dir DIR --json; input bodies use --file FILE or --file - (stdin).'};
   const directory=resolve(values['config-dir']||process.env.VIBENATE_CONFIG_DIR||resolve(homedir(),'.config','vibenate'));
   const filename=resolve(directory,'credentials.json');let stored={};
   try {stored=JSON.parse(await readFile(filename,'utf8'));}catch(error){if(error.code!=='ENOENT')throw error;}
@@ -40,7 +40,17 @@ export async function run(args=process.argv.slice(2)) {
     case 'preflight':return client.request('POST','/submissions/preflight',{submission:await input()},{authenticated:false});
     case 'import-packet':return client.request('POST','/contribution-packets',await input(),{idempotencyKey:key});
     case 'history':return client.request('GET','/agents/me/contributions');
-    case 'work':return client.request('GET','/work-queue',undefined,{authenticated:false});
+    case 'work':return client.workQueue({supportedPathKinds:values.path?[values.path]:[],cursor:Number(values.cursor||0)});
+    case 'resolve':return client.resolve(values.file?await input():bodyQuery());
+    case 'brief':return client.brief();
+    case 'reason-codes':return client.reasonCodes();
+    case 'draft':return client.draft(values.file?await input():subject);
+    case 'watch':return client.watch(await input(),key);
+    case 'watchlist':return client.watchlist();
+    case 'unwatch':return client.unwatch(subject,key);
+    case 'dependency-changes':return client.dependencyChanges(values.cursor||subject||'0');
+    case 'outcomes':return client.outcomes(subject);
+    case 'reconcile':{const mutationKey=key||subject;if(!mutationKey)throw new VibenateError('KEY_REQUIRED','Supply the original key or use --idempotency-key',400);return client.reconcileMutation(mutationKey,key?subject:undefined);}
     case 'doctor':{
       const report=await client.doctor();
       try{await mkdir(directory,{recursive:true,mode:0o700});const probe=resolve(directory,`doctor-${crypto.randomUUID()}.tmp`);await writeFile(probe,'',{mode:0o600,flag:'wx'});const {unlink}=await import('node:fs/promises');await unlink(probe);report.checks.credential_storage={ok:true};}catch{report.checks.credential_storage={ok:false,code:'STORAGE_UNAVAILABLE',message:'Choose a writable --config-dir'};report.ok=false;}
@@ -73,7 +83,7 @@ export async function run(args=process.argv.slice(2)) {
     case 'filter':{const data=await input();return client.filter({...Array.isArray(data)?{urls:data,constraints:bodyQuery().constraints}:data,view:values.view||'connect'});}
     case 'inspect':return client.inspect(subject);
     case 'validate':return client.validate(await input());
-    case 'compare':return client.compare(positionals.slice(1),{view:values.view||'connect',task:values.task});
+    case 'compare':return client.compare(positionals.slice(1),values.file?await input():{view:values.view||'connect',task:values.task});
     case 'changes':return client.changes(values.cursor);
     case 'submit':return values['dry-run']?client.validate(await input()):client.submit(await input(),key);
     case 'status':return client.status(subject);

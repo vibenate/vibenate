@@ -1,6 +1,6 @@
 {
   "name": "@vibenate/client",
-  "version": "2.5.1",
+  "version": "2.6.0",
   "type": "module",
   "exports": {
     ".": {
@@ -17,11 +17,11 @@
     }
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.32.1",
-    "jose": "^6.2.12"
+    "jose": "^6.2.12",
+    "@modelcontextprotocol/sdk": "^1.32.1"
   },
   "bin": {
-    "vibenate": "./cli.mjs"
+    "vibenate": "cli.mjs"
   },
   "files": [
     "index.mjs",

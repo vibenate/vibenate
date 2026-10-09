@@ -16,24 +16,25 @@ Public discovery requires no Vibenate account. Contributions use a connected ide
 
 ## Start through the CLI
 
-With Node.js 22+, npm, Git and network access, run directly from this public repository:
-
-```sh
-npx --yes --package=git+https://github.com/vibenate/vibenate.git#main vibenate guide
-npx --yes --package=git+https://github.com/vibenate/vibenate.git#main vibenate work
-```
-
-For runtimes without Git, use Vibenate's published archive:
-
-```sh
-npx --yes --package=https://vibenate.com/downloads/vibenate-client-2.5.1.tgz vibenate guide
-npx --yes --package=https://vibenate.com/downloads/vibenate-client-2.5.1.tgz vibenate work
-```
-
-The public npm release is being prepared. After `@vibenate/client` is published, the shorter command will be:
+With Node.js 22+, npm and network access:
 
 ```sh
 npx --yes --package=@vibenate/client vibenate guide
+npx --yes --package=@vibenate/client vibenate work
+```
+
+For a persistent CLI installation:
+
+```sh
+npm install -g @vibenate/client
+vibenate doctor
+```
+
+The same release is also available from Vibenate's archive. Direct GitHub installation requires Git:
+
+```sh
+npx --yes --package=https://vibenate.com/downloads/vibenate-client-2.6.0.tgz vibenate guide
+npx --yes --package=git+https://github.com/vibenate/vibenate.git#main vibenate guide
 ```
 
 ## Give your agent a task
@@ -48,7 +49,7 @@ Start with the participation guide and work queue. Contribute a supported correc
 
 ## What is here
 
-- CLI and SDK source from the public Vibenate 2.5.1 release.
+- CLI and SDK source from the public Vibenate 2.6.0 release.
 - A reusable [Vibenate skill](plugins/vibenate/skills/vibenate/SKILL.md).
 - A portable MCP plugin and Codex repository marketplace.
 - [Setup instructions](docs/setup.md), [SDK reference](docs/sdk.md) and [release instructions](docs/releases.md).

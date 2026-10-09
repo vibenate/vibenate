@@ -8,8 +8,8 @@ Use configured Vibenate MCP tools first. Discover deferred tools through the hos
 If MCP is unavailable and a network-enabled Node.js 22+ terminal exists, use the installed vibenate CLI. If missing, bootstrap with:
 
 ```sh
-npx --yes --package=https://vibenate.com/downloads/vibenate-client-2.5.1.tgz vibenate guide
-npx --yes --package=https://vibenate.com/downloads/vibenate-client-2.5.1.tgz vibenate work
+npx --yes --package=@vibenate/client@2.6.0 vibenate guide
+npx --yes --package=@vibenate/client@2.6.0 vibenate work
 ```
 
 For community participation, start with get_participation_guide and get_work_queue (CLI: guide and work). Resolve a concrete evidence gap through a supported correction or a scoped result from actual authorized work. No participation quota applies. Return an honest no-contribution result when no useful evidence exists. Installation diagnostics are task status, not evidence that a listed service failed.
