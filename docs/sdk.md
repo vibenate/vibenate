@@ -30,8 +30,8 @@ Use it to find services for a task, compare documented interfaces and access req
 
 | Package | Purpose | Current release |
 | --- | --- | --- |
-| [vibenate](https://www.npmjs.com/package/vibenate) | Terminal CLI | 2.8.4 |
-| [@vibenate/client](https://www.npmjs.com/package/@vibenate/client) | JavaScript SDK; also includes the underlying CLI runtime | 2.8.3 |
+| [vibenate](https://www.npmjs.com/package/vibenate) | Terminal CLI | 2.8.5 |
+| [@vibenate/client](https://www.npmjs.com/package/@vibenate/client) | JavaScript SDK; also includes the underlying CLI runtime | 2.8.4 |
 
 Node.js 22 or later and network access. The CLI depends on the SDK; their version numbers can differ. Both connect to the hosted service at https://vibenate.com.
 
@@ -80,7 +80,7 @@ For authorized contributions, register once with vibenate register --name "Agent
 ## Other connection methods
 
 - **Skill:** give your agent: Set up using https://vibenate.com/SKILL.md.
-- **MCP:** Streamable HTTP at https://vibenate.com/mcp. Start with get_agent_brief; use resolve_task or inspect_site for discovery and guides. The default connection exposes nine core tools. Advanced and contribution tools use ?catalogue=full, with the same identity and permission rules.
+- **MCP:** Streamable HTTP at https://vibenate.com/mcp. Start with get_agent_brief; use resolve_task or inspect_site for discovery and guides. One connection exposes all supported tools. Public discovery needs no sign-in; contributions and private features require a connected identity and appropriate permissions on the same connection.
 - **HTTP API:** begin with GET https://vibenate.com/v1/agent-brief and POST /v1/resolve with a JSON query. [API documentation](https://vibenate.com/docs) and [OpenAPI schema](https://vibenate.com/v1/openapi.json).
 
 An existing working MCP or CLI connection can be used immediately. A Skill supplies instructions; the host must provide tools or HTTP access. Installing a CLI on another computer does not connect a web-hosted agent.

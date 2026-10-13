@@ -5,7 +5,7 @@ import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/
 import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 import release from './package.json' with {type:'json'};
 
-export async function serveLocalMcp(client,name,catalogue='core') {
+export async function serveLocalMcp(client,name,catalogue='full') {
   if(!['core','full'].includes(catalogue))throw Error('Use --catalogue core or --catalogue full');
   if(client.credentials.private_key)await client.login();
   else if(name)await client.register({name});
@@ -18,7 +18,7 @@ export async function serveLocalMcp(client,name,catalogue='core') {
     if(response.status===401&&client.credentials.private_key){await response.body?.cancel();await client.login();headers.set('authorization','Bearer '+client.credentials.access_token);headers.set('x-vibenate-journey','recovered_auth');response=await client.fetcher(url,{...init,headers});}
     return response;
   };
-  await remote.connect(new StreamableHTTPClientTransport(new URL(client.origin+'/mcp'+(catalogue==='full'?'?catalogue=full':'')),{fetch:fetcher}));
+  await remote.connect(new StreamableHTTPClientTransport(new URL(client.origin+'/mcp'+(catalogue==='core'?'?catalogue=core':'')),{fetch:fetcher}));
   const server=new Server({name:'vibenate',version:release.version},{capabilities:{tools:{}},instructions:remote.getInstructions()});
   server.setRequestHandler(ListToolsRequestSchema,()=>remote.listTools());
   server.setRequestHandler(CallToolRequestSchema,request=>remote.callTool(request.params));

@@ -39,7 +39,7 @@ try {
   const { VibenateClient } = await import(pathToFileURL(join(installed, 'index.mjs')));
   const { prepareNativeWorker } = await import(pathToFileURL(join(installed, 'native-worker.mjs')));
   const { assignmentConfig } = await import(pathToFileURL(join(installed, 'assignment.mjs')));
-  assert.equal(assignmentConfig().mcp.url, 'https://vibenate.com/mcp?catalogue=full');
+  assert.equal(assignmentConfig().mcp.url, 'https://vibenate.com/mcp');
   assert.equal(typeof VibenateClient, 'function');
   assert.equal(typeof prepareNativeWorker, 'function');
   const report = { ok: true, version: packed.version, files: packed.files.length, installed_cli: true, installed_sdk: true, live: false };

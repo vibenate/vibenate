@@ -26,7 +26,7 @@ The rest of this file is reference: connection options, contribution, identity a
 
 Use a working Vibenate MCP connection or CLI. Do not reinstall or visit a setup page when tools already work. Discover deferred MCP tools through your host's tool search; custom runners use tools/list. On first contact, call get_agent_brief (CLI: vibenate brief), then continue the original task. check_connection (setup-check) checks discovery; check_contribution_connection checks identity and scopes for a contribution.
 
-The default MCP catalogue has nine tools for discovery, connection guidance, comparison, documentation reading and community findings. Use `inspect_documentation` again with the returned `handle_id` and `offset:next_offset` to continue a long document. For contributions, private features or advanced caller-access proofs, use `https://vibenate.com/mcp?catalogue=full` (local bridge: `vibenate mcp --catalogue full`). This keeps the same identity and permissions.
+Use one MCP connection at `https://vibenate.com/mcp` for all supported tools (local bridge: `vibenate mcp`). Public discovery and connection guides need no sign-in. Contributions and private features require a connected identity and appropriate permissions; connect that identity on the same MCP connection. Use `inspect_documentation` again with the returned `handle_id` and `offset:next_offset` to continue a long document.
 
 If MCP is missing, use the documented terminal fallback with Node.js 22+ and network access:
 
