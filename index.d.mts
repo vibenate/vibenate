@@ -1,6 +1,7 @@
 import type { JWK } from 'jose';
 import type { CompactSearchResult,CompactSite,CatalogueQuery,CatalogueResult,SearchResult,FilterResult,SiteView,ValidationResult,ComparisonResult } from './types.d.mts';
 export type * from './types.d.mts';
+export function isPublicRequest(method:string,path:string):boolean;
 
 export type Identity = {agent_id?:string; account_id?:string; key_id?:string; expires_at?:string};
 export type Credentials = Identity & {
@@ -47,6 +48,7 @@ export class VibenateClient {
   reconcileMutation(idempotencyKey:string,operation?:string):Promise<Record<string,unknown>>;
   filter(input:unknown):Promise<FilterResult>;
   inspect(serviceId:string):Promise<SiteView>;
+  connectionGuide(serviceId:string,context?:import('./types.d.mts').GuideContext):Promise<import('./types.d.mts').ServiceGuide>;
   catalogue(input?:CatalogueQuery):Promise<CatalogueResult>;
   analytics():Promise<Record<string,unknown>>;
   validate(input:unknown,documents?:{url:string;text:string}[]):Promise<ValidationResult>;
@@ -58,6 +60,9 @@ export class VibenateClient {
   status(submissionId:string):Promise<Record<string,unknown>>;
   vote(entryId:string,value:1|-1,idempotencyKey?:string):Promise<Record<string,unknown>>;
   review(entryId:string,input:unknown,idempotencyKey?:string):Promise<Record<string,unknown>>;
+  agentProfile(agentId:string,cursor?:number):Promise<Record<string,unknown>>;
+  participationInbox(after?:string,limit?:number):Promise<Record<string,unknown>>;
+  resolveQuestion(questionId:string,input:{answer_id:string|null;expected_question_revision:number;expected_answer_revision?:number;expected_resolution_revision:number},idempotencyKey?:string):Promise<Record<string,unknown>>;
   comment(entryId:string,input:unknown,idempotencyKey?:string):Promise<Record<string,unknown>>;
   declare(serviceId:string,input:unknown,idempotencyKey?:string):Promise<Record<string,unknown>>;
 }

@@ -2,6 +2,11 @@ name: Publish npm package
 on:
   workflow_dispatch:
     inputs:
+      package:
+        description: Package to publish
+        required: true
+        type: choice
+        options: [client, cli]
       version:
         description: Package version to publish
         required: true
@@ -22,11 +27,19 @@ jobs:
           node-version: '24'
           registry-url: https://registry.npmjs.org
           package-manager-cache: false
-      - name: Check requested version
+      - run: npm install --global npm@12.2.0
+      - name: Validate requested package and version
         env:
+          RELEASE_PACKAGE: ${{ inputs.package }}
           RELEASE_VERSION: ${{ inputs.version }}
-        run: node --input-type=module -e "import p from './package.json' with {type:'json'}; if(p.version!==process.env.RELEASE_VERSION) throw Error('Version mismatch');"
+        run: |
+          node --input-type=module -e "import fs from 'node:fs'; const file=process.env.RELEASE_PACKAGE==='client'?'package.json':process.env.RELEASE_PACKAGE==='cli'?'packages/cli/package.json':null; if(!file)throw Error('Invalid package'); const p=JSON.parse(fs.readFileSync(file)); if(p.version!==process.env.RELEASE_VERSION)throw Error('Version mismatch');"
       - run: npm ci --ignore-scripts
       - run: npm test
       - run: npm run test:installed
-      - run: npm publish --access public --provenance
+      - name: Publish SDK
+        if: inputs.package == 'client'
+        run: npm publish --access public --provenance
+      - name: Publish CLI
+        if: inputs.package == 'cli'
+        run: npm publish ./packages/cli --access public --provenance

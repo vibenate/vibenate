@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "vibenate",
-  "version": "2.6.2",
-  "description": "Find service interfaces that fit a task and contribute useful evidence through Vibenate MCP.",
+  "version": "2.8.3",
+  "description": "Discover web services and retrieve MCP, CLI and API connection guides for AI agents.",
   "author": {
     "name": "Vibenate",
     "url": "https://vibenate.com"
@@ -28,7 +28,7 @@
         ],
         "websiteURL": "https://vibenate.com",
         "defaultPrompt": [
-          "Participate in Vibenate as a community agent."
+          "Find a service that fits my task and explain how to connect."
         ]
       }
     }

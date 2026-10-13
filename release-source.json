@@ -1,9 +1,32 @@
 {
-  "version": "2.6.0",
-  "client": {
-    "url": "https://vibenate.com/downloads/vibenate-client-2.6.0.tgz",
-    "integrity": "sha512-E1qLYZXycEygfx5Qhj51lsjD9xgEufeEp23UrcBZICH0FzwMXiQS5rHFzQdb3pYYgdAlk5oJXcz2C6LrIwK4WQ==",
-    "shasum": "a9a30acb797043615f1278dbac379a8c725a1e55"
+  "sdk": {
+    "name": "@vibenate/client",
+    "version": "2.8.3"
   },
-  "note": "Runtime imported from the current verified public Vibenate archive. Installation documentation and plugin metadata maintained here."
+  "cli": {
+    "name": "vibenate",
+    "version": "2.8.4"
+  },
+  "repository": "https://github.com/vibenate/vibenate",
+  "sha256": {
+    "LICENSE": "8c24336eda267f04e5c46b5a609da2dcc27dcdd5e52abb11dde9a33901b45763",
+    "README.md": "da5ba609ec0c2272900b7e6d71382cb914d35ab246827409aa0651fd78782b64",
+    "assignment.d.mts": "0398339577af9f188835dbba131c915fb7bcc783eefa8339e4cefc2b00e19cc8",
+    "assignment.mjs": "be7b594271edf2386e9bb21582057e8d0dde0d0691f275f742620780a7d6b4ba",
+    "cli.d.mts": "61c699e57c47f596e92f6e07d78ec9aa77457a51e6907998faec9d1df785388e",
+    "cli.mjs": "96ec532b8dfd8d8daa3a0ce3782bc1299359b94b792133f09335eb91582c3d38",
+    "connection-guide.md": "4d368a9e259f54e222db7c1800d1e30ace34aa5a669cd9a9c80c96506f872170",
+    "index.d.mts": "38adb37d9ef27c63b3375a6d69ce3a01e1980276f710b320c30011c938490abf",
+    "index.mjs": "10b16e18496366d3db31cface51a46e61695ad8fb37e8030ebfc55992927bb6f",
+    "local-mcp.mjs": "efbc4906d5e561eda0f85d2f18edf83f2c0076f6b91cc7512528bf406741479a",
+    "native-worker.d.mts": "6bfced5d5eeb2a323301334e90e0e343b94ffef5c383094424505d12dfdad442",
+    "native-worker.mjs": "20e08b056dae7402f3b0971278772d970cf17a122668611a6121cfb4f7b9126c",
+    "package.json": "f37ca12bc77a60715f498f2c6dcb3f4c36060c8d74d35a2bb18c3794436fd76b",
+    "packages/cli/LICENSE": "8c24336eda267f04e5c46b5a609da2dcc27dcdd5e52abb11dde9a33901b45763",
+    "packages/cli/README.md": "30d01e07a979e7d7295992b73f69dc84593b56fe58127afd3b4575fc1d9967d4",
+    "packages/cli/cli.mjs": "5c0b3e168979f8b138eeecf92ae8cef71acc92b9392b3b5fd94e9975a9559666",
+    "packages/cli/package.json": "b998f2db7198b10192138d0588e457344fcac43e6bede8473c6bb02ced537c34",
+    "types.d.mts": "2c0217a5bee295d7ea145b9691d8ad68bd9868f314ec54946faf90a5d01e3b8b"
+  },
+  "note": "Source checksums for the distributed integration code. npm provenance is a separate release attestation."
 }

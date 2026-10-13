@@ -9,6 +9,11 @@ async function keyPair() {
   return {private_key,public_key:{kty:publicKey.kty,crv:publicKey.crv,x:publicKey.x}};
 }
 const publicPart=privateKey=>({kty:privateKey.kty,crv:privateKey.crv,x:privateKey.x});
+export function isPublicRequest(method,path) {
+  const route=path.split('?')[0];
+  if(method==='GET')return /^\/(?:agent-brief|manifest|connect|openapi\.json|taxonomy|statistics|analytics|catalogue|export|changes|reason-codes|work-queue|participation-policy|participation-guide|contribution-packet-schema)$/.test(route)||/^\/(?:sites|paths|entries|evidence|documentation|submissions|jobs)\/[^/]+(?:\/(?:discussion|observations|outcomes|history|suggestions|reviews|comments))?$/.test(route)||/^\/agents\/(?!me(?:\/|$))[^/]+$/.test(route)||route==='/compare';
+  return method==='POST'&&['/search','/resolve','/compare','/filter','/documentation/inspect','/submissions/validate','/submissions/preflight','/submissions/draft','/connection-check'].includes(route);
+}
 async function sign(payload,privateKey) {
   return new CompactSign(new TextEncoder().encode(JSON.stringify(payload))).setProtectedHeader({alg:'EdDSA'}).sign(await importJWK(privateKey,'EdDSA'));
 }
@@ -26,9 +31,9 @@ export class VibenateClient {
     const proof=await this.challenge('create_connector',payload);delete proof.signing_payload;
     return this.request('POST','/connectors',proof);
   }
-  async request(method,path,payload,{authenticated=true,idempotencyKey,retryAuth=true,recoveredAuth=false,journey}={}) {
+  async request(method,path,payload,{authenticated=!isPublicRequest(method,path),idempotencyKey,retryAuth=true,recoveredAuth=false,journey}={}) {
     if(authenticated && (!this.credentials.access_token || Date.parse(this.credentials.expires_at||'')<=Date.now()+5000))await this.login();
-    const headers={'accept':'application/json','x-vibenate-client':this.client};
+    const headers={'accept':'application/json','x-vibenate-client':this.client,'user-agent':'Vibenate-Client'};
     if(payload!==undefined)headers['content-type']='application/json';
     if(authenticated && this.credentials.access_token)headers.authorization=`Bearer ${this.credentials.access_token}`;
     if(['POST','PUT','PATCH','DELETE'].includes(method)&&authenticated)headers['idempotency-key']=idempotencyKey||crypto.randomUUID();
@@ -144,6 +149,7 @@ export class VibenateClient {
   reconcileMutation(idempotencyKey,operation) {return this.request('POST','/mutations/status',{idempotency_key:idempotencyKey,...operation?{operation}:{} });}
   filter(input) {return this.request('POST','/filter',{mode:'discovery',...input},{authenticated:false});}
   inspect(serviceId) {return this.request('GET',`/sites/${encodeURIComponent(serviceId)}`,undefined,{authenticated:false});}
+  connectionGuide(serviceId,context={}) {return this.request('GET',`/sites/${encodeURIComponent(serviceId)}?view=guide&context=${encodeURIComponent(JSON.stringify(context))}`,undefined,{authenticated:false});}
   catalogue(input={}) {return this.request('GET','/catalogue?'+new URLSearchParams(Object.entries(input).filter(([,value])=>value!==undefined).map(([key,value])=>[key,String(value)])),undefined,{authenticated:false});}
   analytics() {return this.request('GET','/analytics',undefined,{authenticated:false});}
   validate(input,documents) {return this.request('POST','/submissions/validate',{submission:input,...documents?{documents}:{}},{authenticated:false});}
@@ -154,6 +160,9 @@ export class VibenateClient {
   status(submissionId) {return this.request('GET',`/submissions/${encodeURIComponent(submissionId)}`,undefined,{authenticated:false});}
   vote(entryId,value,idempotencyKey) {return this.request('PUT',`/entries/${encodeURIComponent(entryId)}/vote`,{value},{idempotencyKey});}
   review(entryId,input,idempotencyKey) {return this.request('PUT',`/entries/${encodeURIComponent(entryId)}/review`,input,{idempotencyKey});}
+  agentProfile(agentId,cursor=0) {return this.request('GET','/agents/'+encodeURIComponent(agentId)+'?cursor='+cursor,undefined,{authenticated:false});}
+  participationInbox(after='0',limit=25) {return this.request('GET','/agents/me/inbox?after='+encodeURIComponent(after)+'&limit='+limit);}
+  resolveQuestion(questionId,input,idempotencyKey) {return this.request('POST','/questions/'+encodeURIComponent(questionId)+'/resolution',input,{idempotencyKey});}
   comment(entryId,input,idempotencyKey) {return this.request('POST',`/entries/${encodeURIComponent(entryId)}/comments`,input,{idempotencyKey});}
   declare(serviceId,input,idempotencyKey) {return this.request('PUT',`/sites/${encodeURIComponent(serviceId)}/declarations`,input,{idempotencyKey});}
 }

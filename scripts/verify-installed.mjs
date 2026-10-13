@@ -31,13 +31,13 @@ try {
   assert.ok(packed.files.every(file => !/(^|\/)(credentials[^/]*\.json|\.env[^/]*|node_modules)(\/|$)/.test(file.path)));
   await run(['install', '--ignore-scripts', '--no-audit', '--no-fund', join(directory, packed.filename)]);
   const configDir = join(directory, 'identity');
-  const guide = JSON.parse(await run(['exec', '--offline', '--', 'vibenate', 'guide', '--config-dir', configDir]));
-  assert.ok(guide.guide.includes('https://vibenate.com/mcp'));
+  const guide = JSON.parse(await run(['exec', '--offline', '--', 'vibenate', 'skill', '--config-dir', configDir]));
+  assert.ok(guide.skill.includes('https://vibenate.com/mcp'));
   const installed = join(directory, 'node_modules/@vibenate/client');
   const { VibenateClient } = await import(pathToFileURL(join(installed, 'index.mjs')));
   const { prepareNativeWorker } = await import(pathToFileURL(join(installed, 'native-worker.mjs')));
   const { assignmentConfig } = await import(pathToFileURL(join(installed, 'assignment.mjs')));
-  assert.equal(assignmentConfig().mcp.url, 'https://vibenate.com/mcp');
+  assert.equal(assignmentConfig().mcp.url, 'https://vibenate.com/mcp?catalogue=full');
   assert.equal(typeof VibenateClient, 'function');
   assert.equal(typeof prepareNativeWorker, 'function');
   const report = { ok: true, version: packed.version, files: packed.files.length, installed_cli: true, installed_sdk: true, live: false };

@@ -1,19 +1,25 @@
-# Publishing releases
+# Publishing CLI and SDK releases
 
-The CLI runtime in this repository comes from the already-public Vibenate 2.6.0 archive. Source checksums are recorded in release-source.json. Changes to installation docs and portable plugin metadata are maintained here.
+The repository root is the @vibenate/client SDK and underlying CLI runtime. packages/cli is the vibenate terminal wrapper. Their versions can differ; the CLI declares its SDK dependency explicitly.
 
-## First npm publication
+## Validate source and packages
 
-The npm account or organization controlling @vibenate must authorize publication. GitHub organization ownership does not establish npm scope ownership.
+Use Node.js 22 or later. Run npm ci, npm test, npm run test:installed and npm run build:plugin. Run npm pack --dry-run in the root and packages/cli and confirm that LICENSE, current READMEs and required runtime files are present. Never include website infrastructure, credentials or runtime configuration.
 
-Run npm ci, npm test, npm run test:installed and npm pack --dry-run. Then sign in to npm through its normal account flow and publish with npm publish --access public. Complete required account/2FA checks yourself. Never commit or paste publishing credentials.
+Public Skill copies and connection-guide.md must match the canonical Skill. The source publication manifest release-source.json records SHA-256 checksums; it is a source integrity record, not npm provenance.
 
-After the package exists, configure its npm trusted publisher for GitHub organization vibenate, repository vibenate, workflow publish.yml and environment npm. Choose whether it may publish directly. The workflow uses OIDC and requests no long-lived npm token. [npm trusted publisher instructions](https://docs.npmjs.com/trusted-publishers/).
+## Release workflow and provenance
 
-The manual release workflow runs tests and checks that its requested version equals package.json before publishing. Verify the version and a fresh registry installation before announcing the release. Keep the README, task instruction and skill bootstrap version aligned with the published client.
+The publish.yml workflow accepts a package and version, requires main, validates the manifest, runs package checks, and publishes with --provenance through GitHub OIDC. Each npm package must trust the vibenate/vibenate repository, publish.yml workflow and npm environment before that workflow can publish. No long-lived npm token is used.
 
-## Plugin distribution
+[Configure npm trusted publishing](https://docs.npmjs.com/trusted-publishers/). A repository workflow alone does not establish trust or prove provenance. Confirm the provenance statement on the published npm release.
 
-npm run build:plugin creates a portable plugin ZIP in dist/. This is a package for host testing and eventual directory submission; it is not a public directory listing. The repository marketplace is already available to supported local hosts after adding this repository.
+Publish the SDK before a CLI release that depends on its new version. Then verify a fresh npm installation, the SDK import, CLI help and a public read. Create sdk-vVERSION and cli-vVERSION tags with concise release notes.
 
-Before public ChatGPT submission, verify anonymous reads, account linking, identity lookup, permitted writes and denied writes inside an actual ChatGPT Work conversation. Include publisher/domain verification, privacy/terms metadata, review cases and a demo required by the submission portal. [Official submission instructions](https://developers.openai.com/plugins/deploy/submission).
+## Maintain shared documentation
+
+The website development repository keeps docs/distribution-facts.json and scripts/sync-distribution-docs.mjs as the source for package README content. Synchronize the generated READMEs and current canonical Skill into this public integration repository with each release. Archive installers remain supported as a fallback; normal instructions use npm package names.
+
+## License
+
+The public integration code and packages use the existing MIT license. Hosted registry data, third-party providers and their content have separate terms.

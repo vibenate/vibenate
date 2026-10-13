@@ -16,7 +16,7 @@ export async function prepareNativeWorker(client,{task,allowedWrites=[]}={}){
     return response;
   };
   try{
-    await remote.connect(new StreamableHTTPClientTransport(new URL(client.origin+'/mcp'),{fetch:fetcher}));
+    await remote.connect(new StreamableHTTPClientTransport(new URL(client.origin+'/mcp?catalogue=full'),{fetch:fetcher}));
     const all=await remote.listTools();
     const guide=await remote.callTool({name:'get_participation_guide',arguments:{}});
     const checked=await remote.callTool({name:client.credentials.private_key?'check_contribution_connection':'check_connection',arguments:{}});
