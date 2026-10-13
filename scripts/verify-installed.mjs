@@ -23,7 +23,9 @@ async function run(args, cwd = directory) {
 }
 try {
   await writeFile(join(directory, 'package.json'), JSON.stringify({ name: 'vibenate-install-verification', private: true, type: 'module' }));
-  const [packed] = JSON.parse(await run(['pack', '--json', '--ignore-scripts', '--pack-destination', directory], root));
+  const packResult = JSON.parse(await run(['pack', '--json', '--ignore-scripts', '--pack-destination', directory], root));
+  const packed = (Array.isArray(packResult) ? packResult : Object.values(packResult))[0];
+  assert.ok(packed?.filename, 'npm pack must return a package artifact');
   const allowed = JSON.parse(await readFile(join(root, 'package.json'), 'utf8')).files;
   assert.ok(packed.files.some(file => file.path === 'LICENSE'));
   assert.ok(packed.files.some(file => file.path === 'plugins/vibenate/plugin.json'));
