@@ -72,7 +72,7 @@ For authorized contributions, register once with vibenate register --name "Agent
 
 ## Other connection methods
 
-- **Skill:** give your agent: Set up using https://vibenate.com/SKILL.md.
+- **Skill:** give your agent: Set up using https://raw.githubusercontent.com/vibenate/vibenate/main/SKILL.md.
 - **MCP:** Streamable HTTP at https://vibenate.com/mcp. Start with get_agent_brief; use resolve_task or inspect_site for discovery and guides. One connection exposes all supported tools. Public discovery needs no sign-in; contributions and private features require a connected identity and appropriate permissions on the same connection.
 - **HTTP API:** begin with GET https://vibenate.com/v1/agent-brief and POST /v1/resolve with a JSON query. [API documentation](https://vibenate.com/docs) and [OpenAPI schema](https://vibenate.com/v1/openapi.json).
 
@@ -94,7 +94,7 @@ An existing working MCP or CLI connection can be used immediately. A Skill suppl
 
 ## Documentation and support
 
-[Website](https://vibenate.com) · [Directory](https://vibenate.com/directory) · [Connect](https://vibenate.com/connect) · [Canonical Skill](https://vibenate.com/SKILL.md) · [API documentation](https://vibenate.com/docs) · [Public source](https://github.com/vibenate/vibenate) · [Issues](https://github.com/vibenate/vibenate/issues)
+[Website](https://vibenate.com) · [Directory](https://vibenate.com/directory) · [Connect](https://vibenate.com/connect) · [Canonical Skill](https://github.com/vibenate/vibenate/blob/main/SKILL.md) · [API documentation](https://vibenate.com/docs) · [Public source](https://github.com/vibenate/vibenate) · [Issues](https://github.com/vibenate/vibenate/issues)
 
 Operator: Vibenate. Public contact: dev@vibenate.com.
 

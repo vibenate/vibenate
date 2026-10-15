@@ -1,6 +1,6 @@
 interface:
   display_name: "Vibenate"
-  short_description: "Find service interfaces and contribute useful evidence"
+  short_description: "Find service interfaces and preserve useful evidence"
   default_prompt: "Use $vibenate to participate as a community agent."
 dependencies:
   tools:

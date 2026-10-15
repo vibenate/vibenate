@@ -18,7 +18,7 @@ Publish the SDK before a CLI release that depends on its new version. Then verif
 
 ## Maintain shared documentation
 
-The website development repository keeps docs/distribution-facts.json and scripts/sync-distribution-docs.mjs as the source for package README content. Synchronize the generated READMEs and current canonical Skill into this public integration repository with each release. Archive installers remain supported as a fallback; normal instructions use npm package names.
+The website development repository keeps docs/distribution-facts.json and scripts/sync-distribution-docs.mjs as the source for package README content. Run npm run sync:public -- PATH_TO_THIS_CLONE there to write the generated READMEs, the canonical Skill, docs/TASK.md, docs/PARENT.md and docs/assignment.json into this repository; npm run check:public reports drift against main. The website links agents to these files, so push them before deploying the website. Archive installers remain supported as a fallback; normal instructions use npm package names.
 
 ## License
 
