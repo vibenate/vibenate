@@ -11,14 +11,22 @@ Your goal is to complete the user's task, not to use Vibenate. Finding a service
 
 ## Quick start
 
-First check what you can already execute: working provider connections (MCP tools, an authenticated CLI) and whether your runtime can make outbound HTTP requests. Reuse a working, authorized connection that supports the operation before any new setup. Four steps. The first three need no account.
+First check what you can already execute: working provider connections (MCP tools, an authenticated CLI) and whether your runtime can make outbound HTTP requests. Reuse a working, authorized connection that supports the operation before any new setup.
+
+**Reach Vibenate first, once.** Use connected Vibenate MCP tools if you have them. Otherwise send one `GET https://vibenate.com/v1/agent-brief` from your HTTP client. If it fails (unresolved host, blocked or allowlisted network, proxy refusal, timeout), do not retry, and do not try the CLI or a browser instead: they need the same host. Then, straight away:
+
+- Read the fallback at `https://raw.githubusercontent.com/vibenate/vibenate/main/docs/common-tasks.json` (mirror: `https://cdn.jsdelivr.net/gh/vibenate/vibenate@main/docs/common-tasks.json`). If an entry matches your task, use its request, preparation and validation, and note its `hosts`.
+- Ask the user once, early, for everything the task needs, in one message: "To complete this I need network access to vibenate.com and [the provider hosts from the entry or guide]. Please allow these hosts in this workspace's network settings (an organisation admin may need to), or add the Vibenate connector https://vibenate.com/mcp." Ask before spending time on other routes.
+- Continue whatever you can meanwhile, and say exactly what is pending. If your task is not in the fallback and nothing else works, report the access you asked for rather than substituting a different task.
+
+Four steps. The first three need no account.
 
 1. **Match the task.** MCP `resolve_task` · CLI `vibenate resolve "TASK"` · HTTP `POST https://vibenate.com/v1/resolve` with `{"query":"TASK"}`. Read `status`, then the recommendation's `verdict`.
 2. **Get the service guide.** MCP `inspect_site` with `view:"guide"` · CLI `vibenate guide SERVICE_ID` · HTTP `GET https://vibenate.com/v1/sites/SERVICE_ID?view=guide`.
 3. **Call the provider yourself** using `first_use` (request, inputs, expected result), then apply its `validation` checks to the response.
 4. **Report what happened** (optional; needs an identity). MCP `record_observation` · CLI `vibenate observe PATH_ID --file report.json`.
 
-Without MCP, prefix the CLI commands with `npx --yes vibenate@latest` (Node.js 22+ and network access). Without a terminal, use the HTTP calls from any HTTP client; this is the route for web-hosted agents that cannot add an MCP server.
+Without MCP, use the HTTP calls from any HTTP client; this works for web-hosted and sandboxed agents and needs nothing installed. The CLI (`npx --yes vibenate@latest`, Node.js 22+) is an optional convenience that uses the same host, not a fallback when vibenate.com is unreachable.
 
 `recommended` means documented evidence that the operation does the task; facts about your own runtime, such as network access or credential validity, may still be unchecked (see `unknown_details` and the verdict). It never means verified for you. `insufficient_evidence` leads with a relevant operation whose material facts are unresolved; each unknown has a `check_first`. `constraint_blocked` lists relevant operations with the blocker each one has. `insufficient_operation_evidence` means related services exist but none documents the operation; `catalogue_gap` means no listed service fits. A request with `status:"incomplete"` lists `missing_inputs`; never send placeholders. Every requested value, such as each currency in "SGD to USD and EUR", must appear in the returned request. If one is missing, say so instead of returning a partial answer.
 

@@ -1,0 +1,1531 @@
+{
+ "schema_version": "1.0",
+ "generated_at": "2026-10-15T14:03:00.893Z",
+ "source": "https://vibenate.com/v1/resolve",
+ "purpose": "Fallback for agents that cannot reach vibenate.com. The live API is fresher and covers every listed service; use it once reachable.",
+ "usage": "Pick the entry for your task. Fill request placeholders with your task values (example_request shows them filled for the example; bindings name the arguments for dates, identifiers and filters), follow preparation first, call the provider, then apply validation. hosts lists every host the request needs, for a single permission request.",
+ "entries": [
+  {
+   "id": "weather_forecast",
+   "task_id": "retrieve_weather",
+   "example": "Hourly temperature and rain probability forecast for Singapore for the next 24 hours",
+   "service": {
+    "name": "Open-Meteo",
+    "service_id": "site_485e13ef-2e72-498c-8e72-b7325f65c3f3",
+    "path_id": "path_f305ed69-3cb2-4b31-b75f-53abecbbf3fb",
+    "guide_url": "https://vibenate.com/v1/sites/site_485e13ef-2e72-498c-8e72-b7325f65c3f3?view=guide"
+   },
+   "operation": {
+    "id": "read_forecast",
+    "description": "Read a weather forecast for coordinates",
+    "effects": "read",
+    "input_schema": {
+     "type": "object",
+     "required": [
+      "latitude",
+      "longitude"
+     ],
+     "properties": {
+      "latitude": {
+       "type": "number",
+       "minimum": -90,
+       "maximum": 90
+      },
+      "longitude": {
+       "type": "number",
+       "minimum": -180,
+       "maximum": 180
+      },
+      "current": {
+       "type": "string",
+       "description": "Comma-separated current weather variables."
+      },
+      "hourly": {
+       "type": "string",
+       "description": "Comma-separated hourly variables, for example temperature_2m."
+      },
+      "forecast_days": {
+       "type": "integer",
+       "minimum": 1,
+       "maximum": 16,
+       "default": 7
+      },
+      "forecast_hours": {
+       "type": "integer",
+       "minimum": 1,
+       "description": "Rolling hourly period starting at the current hour, rather than midnight."
+      },
+      "timezone": {
+       "type": "string",
+       "description": "Timezone name or auto; default GMT."
+      }
+     }
+    }
+   },
+   "request": {
+    "method": "GET",
+    "url": "https://api.open-meteo.com/v1/forecast",
+    "query": {
+     "latitude": "<LATITUDE>",
+     "longitude": "<LONGITUDE>",
+     "hourly": "temperature_2m",
+     "timezone": "auto",
+     "forecast_days": 3
+    },
+    "placeholders": [
+     "<LATITUDE>",
+     "<LONGITUDE>"
+    ],
+    "source_url": "https://open-meteo.com/en/docs"
+   },
+   "example_request": {
+    "method": "GET",
+    "url": "https://api.open-meteo.com/v1/forecast",
+    "query": {
+     "latitude": "<LATITUDE>",
+     "longitude": "<LONGITUDE>",
+     "hourly": "temperature_2m,precipitation_probability",
+     "timezone": "auto",
+     "forecast_hours": 24
+    },
+    "placeholders": [
+     "<LATITUDE>",
+     "<LONGITUDE>"
+    ],
+    "source_url": "https://open-meteo.com/en/docs"
+   },
+   "bindings": [],
+   "preparation": {
+    "instruction": "Resolve the requested location using the geocoding request. Select the intended country/location, then replace LATITUDE and LONGITUDE with its returned coordinates.",
+    "request": {
+     "method": "GET",
+     "url": "https://geocoding-api.open-meteo.com/v1/search",
+     "query": {
+      "name": "<LOCATION>",
+      "count": 5
+     }
+    },
+    "source_url": "https://open-meteo.com/en/docs/geocoding-api"
+   },
+   "validation": [],
+   "field_semantics": null,
+   "access": {
+    "credentials_required": false,
+    "authentication": "This public endpoint requires no key for non-commercial use. Commercial use uses the separate customer endpoint and API key.",
+    "usage_conditions": [
+     "Public free access is for non-commercial use. Commercial use requires the documented customer endpoint and subscription. Review attribution and provider usage limits."
+    ]
+   },
+   "hosts": [
+    "api.open-meteo.com",
+    "geocoding-api.open-meteo.com"
+   ],
+   "limitations": [
+    "Attribution is required. Commercial use or higher volumes require the applicable subscription.",
+    "The public free endpoint is for non-commercial use; review provider usage limits.",
+    "The public free endpoint is for non-commercial use; review provider usage limits."
+   ],
+   "provider_check": {
+    "status": "not_run",
+    "reason": "request needs inputs or credentials"
+   }
+  },
+  {
+   "id": "weather_multi_day",
+   "task_id": "retrieve_weather",
+   "example": "3-day weather forecast for Tokyo",
+   "service": {
+    "name": "Open-Meteo",
+    "service_id": "site_485e13ef-2e72-498c-8e72-b7325f65c3f3",
+    "path_id": "path_f305ed69-3cb2-4b31-b75f-53abecbbf3fb",
+    "guide_url": "https://vibenate.com/v1/sites/site_485e13ef-2e72-498c-8e72-b7325f65c3f3?view=guide"
+   },
+   "operation": {
+    "id": "read_forecast",
+    "description": "Read a weather forecast for coordinates",
+    "effects": "read",
+    "input_schema": {
+     "type": "object",
+     "required": [
+      "latitude",
+      "longitude"
+     ],
+     "properties": {
+      "latitude": {
+       "type": "number",
+       "minimum": -90,
+       "maximum": 90
+      },
+      "longitude": {
+       "type": "number",
+       "minimum": -180,
+       "maximum": 180
+      },
+      "current": {
+       "type": "string",
+       "description": "Comma-separated current weather variables."
+      },
+      "hourly": {
+       "type": "string",
+       "description": "Comma-separated hourly variables, for example temperature_2m."
+      },
+      "forecast_days": {
+       "type": "integer",
+       "minimum": 1,
+       "maximum": 16,
+       "default": 7
+      },
+      "forecast_hours": {
+       "type": "integer",
+       "minimum": 1,
+       "description": "Rolling hourly period starting at the current hour, rather than midnight."
+      },
+      "timezone": {
+       "type": "string",
+       "description": "Timezone name or auto; default GMT."
+      }
+     }
+    }
+   },
+   "request": {
+    "method": "GET",
+    "url": "https://api.open-meteo.com/v1/forecast",
+    "query": {
+     "latitude": "<LATITUDE>",
+     "longitude": "<LONGITUDE>",
+     "hourly": "temperature_2m",
+     "timezone": "auto",
+     "forecast_days": 3
+    },
+    "placeholders": [
+     "<LATITUDE>",
+     "<LONGITUDE>"
+    ],
+    "source_url": "https://open-meteo.com/en/docs"
+   },
+   "example_request": {
+    "method": "GET",
+    "url": "https://api.open-meteo.com/v1/forecast",
+    "query": {
+     "latitude": "<LATITUDE>",
+     "longitude": "<LONGITUDE>",
+     "hourly": "temperature_2m",
+     "timezone": "auto",
+     "forecast_days": 3
+    },
+    "placeholders": [
+     "<LATITUDE>",
+     "<LONGITUDE>"
+    ],
+    "source_url": "https://open-meteo.com/en/docs"
+   },
+   "bindings": [],
+   "preparation": {
+    "instruction": "Resolve the requested location using the geocoding request. Select the intended country/location, then replace LATITUDE and LONGITUDE with its returned coordinates.",
+    "request": {
+     "method": "GET",
+     "url": "https://geocoding-api.open-meteo.com/v1/search",
+     "query": {
+      "name": "<LOCATION>",
+      "count": 5
+     }
+    },
+    "source_url": "https://open-meteo.com/en/docs/geocoding-api"
+   },
+   "validation": [],
+   "field_semantics": null,
+   "access": {
+    "credentials_required": false,
+    "authentication": "This public endpoint requires no key for non-commercial use. Commercial use uses the separate customer endpoint and API key.",
+    "usage_conditions": [
+     "Public free access is for non-commercial use. Commercial use requires the documented customer endpoint and subscription. Review attribution and provider usage limits."
+    ]
+   },
+   "hosts": [
+    "api.open-meteo.com",
+    "geocoding-api.open-meteo.com"
+   ],
+   "limitations": [
+    "Attribution is required. Commercial use or higher volumes require the applicable subscription.",
+    "The public free endpoint is for non-commercial use; review provider usage limits.",
+    "The public free endpoint is for non-commercial use; review provider usage limits."
+   ],
+   "provider_check": {
+    "status": "not_run",
+    "reason": "request needs inputs or credentials"
+   }
+  },
+  {
+   "id": "currency_conversion",
+   "task_id": "query_financial_data",
+   "example": "Convert 100 SGD to USD and EUR",
+   "service": {
+    "name": "Frankfurter",
+    "service_id": "site_9fb55b49-1bcd-4f3b-aa0d-2255b525b2e0",
+    "path_id": "path_2020f750-cb92-493a-948b-7e84ddd25881",
+    "guide_url": "https://vibenate.com/v1/sites/site_9fb55b49-1bcd-4f3b-aa0d-2255b525b2e0?view=guide"
+   },
+   "operation": {
+    "id": "get_exchange_rate",
+    "description": "Retrieve reference currency exchange rates for a base and quote currency.",
+    "effects": "read",
+    "input_schema": {
+     "type": "object",
+     "required": [
+      "base",
+      "quotes"
+     ],
+     "properties": {
+      "base": {
+       "type": "string",
+       "description": "ISO currency code, e.g. USD."
+      },
+      "quotes": {
+       "type": "string",
+       "description": "Quote currency code, e.g. SGD."
+      }
+     }
+    }
+   },
+   "request": {
+    "method": "GET",
+    "url": "https://api.frankfurter.dev/v2/rates",
+    "query": {
+     "base": "<BASE_CURRENCY>",
+     "quotes": "<QUOTE_CURRENCY>"
+    },
+    "placeholders": [
+     "<BASE_CURRENCY>",
+     "<QUOTE_CURRENCY>"
+    ],
+    "source_url": "https://frankfurter.dev/"
+   },
+   "example_request": {
+    "method": "GET",
+    "url": "https://api.frankfurter.dev/v2/rates",
+    "query": {
+     "base": "SGD",
+     "quotes": "USD,EUR"
+    },
+    "placeholders": [],
+    "source_url": "https://frankfurter.dev/"
+   },
+   "bindings": [],
+   "preparation": null,
+   "validation": [],
+   "field_semantics": {
+    "date": "Reference-rate publication date for each quote. Quotes can carry different dates; report each date."
+   },
+   "access": {
+    "credentials_required": false,
+    "authentication": "The hosted public API needs no API key.",
+    "usage_conditions": [
+     "Reference rates are published by date; they are not live trading quotes. Convert amounts locally using the returned rate."
+    ]
+   },
+   "hosts": [
+    "api.frankfurter.dev"
+   ],
+   "limitations": [],
+   "provider_check": {
+    "status": "pass",
+    "http_status": 200,
+    "checked_at": "2026-10-15T14:02:24.129Z"
+   }
+  },
+  {
+   "id": "exchange_rate",
+   "task_id": "query_financial_data",
+   "example": "Latest EUR to USD reference exchange rate",
+   "service": {
+    "name": "Frankfurter",
+    "service_id": "site_9fb55b49-1bcd-4f3b-aa0d-2255b525b2e0",
+    "path_id": "path_2020f750-cb92-493a-948b-7e84ddd25881",
+    "guide_url": "https://vibenate.com/v1/sites/site_9fb55b49-1bcd-4f3b-aa0d-2255b525b2e0?view=guide"
+   },
+   "operation": {
+    "id": "get_exchange_rate",
+    "description": "Retrieve reference currency exchange rates for a base and quote currency.",
+    "effects": "read",
+    "input_schema": {
+     "type": "object",
+     "required": [
+      "base",
+      "quotes"
+     ],
+     "properties": {
+      "base": {
+       "type": "string",
+       "description": "ISO currency code, e.g. USD."
+      },
+      "quotes": {
+       "type": "string",
+       "description": "Quote currency code, e.g. SGD."
+      }
+     }
+    }
+   },
+   "request": {
+    "method": "GET",
+    "url": "https://api.frankfurter.dev/v2/rates",
+    "query": {
+     "base": "<BASE_CURRENCY>",
+     "quotes": "<QUOTE_CURRENCY>"
+    },
+    "placeholders": [
+     "<BASE_CURRENCY>",
+     "<QUOTE_CURRENCY>"
+    ],
+    "source_url": "https://frankfurter.dev/"
+   },
+   "example_request": {
+    "method": "GET",
+    "url": "https://api.frankfurter.dev/v2/rate/eur/usd",
+    "placeholders": [],
+    "source_url": "https://frankfurter.dev/"
+   },
+   "bindings": [],
+   "preparation": null,
+   "validation": [],
+   "field_semantics": {
+    "date": "Reference-rate publication date for each quote. Quotes can carry different dates; report each date."
+   },
+   "access": {
+    "credentials_required": false,
+    "authentication": "The hosted public API needs no API key.",
+    "usage_conditions": [
+     "Reference rates are published by date; they are not live trading quotes. Convert amounts locally using the returned rate."
+    ]
+   },
+   "hosts": [
+    "api.frankfurter.dev"
+   ],
+   "limitations": [],
+   "provider_check": {
+    "status": "pass",
+    "http_status": 200,
+    "checked_at": "2026-10-15T14:02:26.140Z"
+   }
+  },
+  {
+   "id": "earthquakes_recent",
+   "task_id": "query_earthquakes",
+   "example": "Earthquakes of magnitude 5 or greater during the last seven complete UTC days",
+   "service": {
+    "name": "USGS Earthquake Catalog",
+    "service_id": "site_830c8408-c0d9-4cda-8eef-bf26640ac38f",
+    "path_id": "path_0d4db96f-7c41-48e4-800c-4748446b5e51",
+    "guide_url": "https://vibenate.com/v1/sites/site_830c8408-c0d9-4cda-8eef-bf26640ac38f?view=guide"
+   },
+   "operation": {
+    "id": "query_events",
+    "description": "Query earthquake events by time window and minimum magnitude, returned as GeoJSON.",
+    "effects": "read",
+    "input_schema": {
+     "type": "object",
+     "properties": {
+      "starttime": {
+       "type": "string",
+       "description": "Limit to events on or after the specified start time."
+      },
+      "endtime": {
+       "type": "string",
+       "description": "Limit to events on or before the specified end time."
+      },
+      "minmagnitude": {
+       "type": "number",
+       "description": "Limit to events with a magnitude larger than the specified minimum."
+      },
+      "orderby": {
+       "type": "string"
+      },
+      "limit": {
+       "type": "integer"
+      }
+     }
+    }
+   },
+   "request": {
+    "method": "GET",
+    "url": "https://earthquake.usgs.gov/fdsnws/event/1/query",
+    "query": {
+     "format": "geojson",
+     "starttime": "<STARTTIME>",
+     "endtime": "<ENDTIME>",
+     "minmagnitude": "<MINMAGNITUDE>",
+     "orderby": "time"
+    },
+    "placeholders": [
+     "<STARTTIME>",
+     "<ENDTIME>",
+     "<MINMAGNITUDE>"
+    ],
+    "source_url": "https://earthquake.usgs.gov/fdsnws/event/1/"
+   },
+   "example_request": {
+    "method": "GET",
+    "url": "https://earthquake.usgs.gov/fdsnws/event/1/query",
+    "query": {
+     "format": "geojson",
+     "starttime": "2026-10-08T00:00:00.000",
+     "endtime": "2026-10-14T23:59:59.999",
+     "minmagnitude": "5",
+     "orderby": "time"
+    },
+    "placeholders": [],
+    "source_url": "https://earthquake.usgs.gov/fdsnws/event/1/"
+   },
+   "bindings": [
+    {
+     "requirement": "window_start",
+     "argument": "starttime",
+     "location": "query"
+    },
+    {
+     "requirement": "window_end",
+     "argument": "endtime",
+     "location": "query"
+    },
+    {
+     "requirement": "min_magnitude",
+     "argument": "minmagnitude",
+     "location": "query"
+    }
+   ],
+   "preparation": null,
+   "validation": [
+    {
+     "check": "Confirm every feature magnitude meets the requested minimum and every time falls inside the requested window."
+    },
+    {
+     "check": "Confirm metadata.count equals the number of features; narrow the window if the 20000 limit is reached."
+    }
+   ],
+   "field_semantics": null,
+   "access": {
+    "credentials_required": null,
+    "authentication": "Authentication is unconfirmed; inspect the quoted provider source.",
+    "usage_conditions": []
+   },
+   "hosts": [
+    "earthquake.usgs.gov"
+   ],
+   "limitations": [
+    "The service limits queries to 20000 events. Catalogue records can be revised by USGS."
+   ],
+   "provider_check": {
+    "status": "not_run",
+    "reason": "request needs inputs or credentials"
+   }
+  },
+  {
+   "id": "public_holidays",
+   "task_id": "query_public_holidays",
+   "example": "List Germany public holidays for 2027",
+   "service": {
+    "name": "The Calendar",
+    "service_id": "site_7fe373e9-1a8a-4f7b-8d22-382c7f8a6057",
+    "path_id": "path_84bed5ca-30c6-4bb7-8990-d23b03816907",
+    "guide_url": "https://vibenate.com/v1/sites/site_7fe373e9-1a8a-4f7b-8d22-382c7f8a6057?view=guide"
+   },
+   "operation": {
+    "id": "holidays_by_country_year",
+    "description": "Retrieve public holidays for one country and year as static JSON.",
+    "effects": "read",
+    "input_schema": {
+     "type": "object",
+     "required": [
+      "country",
+      "year"
+     ],
+     "properties": {
+      "country": {
+       "type": "string",
+       "description": "Country slug, e.g. germany."
+      },
+      "year": {
+       "type": "integer"
+      }
+     }
+    }
+   },
+   "request": {
+    "method": "GET",
+    "url": "https://the-calendar.net/api/holidays/by-country/{country}/{year}.json",
+    "placeholders": [
+     "{country}",
+     "{year}"
+    ],
+    "source_url": "https://the-calendar.net/developers/"
+   },
+   "example_request": {
+    "method": "GET",
+    "url": "https://the-calendar.net/api/holidays/by-country/germany/2027.json",
+    "placeholders": [],
+    "source_url": "https://the-calendar.net/developers/"
+   },
+   "bindings": [
+    {
+     "requirement": "country_name",
+     "argument": "country",
+     "location": "path"
+    },
+    {
+     "requirement": "year",
+     "argument": "year",
+     "location": "path"
+    }
+   ],
+   "preparation": null,
+   "validation": [
+    {
+     "check": "Confirm countryCode and year match the request, then compare movable holidays with the official government announcement."
+    }
+   ],
+   "field_semantics": null,
+   "access": {
+    "credentials_required": false,
+    "authentication": "No credentials required.",
+    "usage_conditions": []
+   },
+   "hosts": [
+    "the-calendar.net"
+   ],
+   "limitations": [
+    "The public data manifest states that attribution is requested and identifies the license as CC BY 4.0.",
+    "A 14 Oct 2026 comparison found 6 of 11 Singapore 2027 holiday dates differed from the official MOM announcement. Compare movable holidays with the official source before relying on them."
+   ],
+   "provider_check": {
+    "status": "pass",
+    "http_status": 200,
+    "checked_at": "2026-10-15T14:02:29.567Z"
+   }
+  },
+  {
+   "id": "scholarly_search",
+   "task_id": "search_scholarly_papers",
+   "example": "Find scholarly papers about protein folding published since 2023",
+   "service": {
+    "name": "OpenAlex",
+    "service_id": "site_faf8fad6-b1c5-42b5-93a2-b34b72698995",
+    "path_id": "path_ddd96a9d-3b45-4637-b00c-0d08ad020845",
+    "guide_url": "https://vibenate.com/v1/sites/site_faf8fad6-b1c5-42b5-93a2-b34b72698995?view=guide"
+   },
+   "operation": {
+    "id": "search_works",
+    "description": "Search scholarly papers by keyword; retrieve titles, DOIs and available abstracts.",
+    "effects": "read",
+    "input_schema": {
+     "type": "object",
+     "required": [
+      "search"
+     ],
+     "properties": {
+      "search": {
+       "type": "string",
+       "description": "Topic keywords, not an instruction to the model."
+      },
+      "per_page": {
+       "type": "integer",
+       "minimum": 1,
+       "maximum": 100
+      }
+     }
+    }
+   },
+   "request": {
+    "method": "GET",
+    "url": "https://api.openalex.org/works",
+    "query": {
+     "search": "<SEARCH_KEYWORDS>",
+     "per_page": 5
+    },
+    "placeholders": [
+     "<SEARCH_KEYWORDS>"
+    ],
+    "source_url": "https://help.openalex.org/api/searching/"
+   },
+   "example_request": {
+    "method": "GET",
+    "url": "https://api.openalex.org/works",
+    "query": {
+     "search": "protein folding",
+     "per_page": 5,
+     "filter": "from_publication_date:2023-01-01"
+    },
+    "placeholders": [],
+    "source_url": "https://help.openalex.org/api/searching/"
+   },
+   "bindings": [
+    {
+     "requirement": "date_from",
+     "argument": "filter",
+     "location": "query"
+    }
+   ],
+   "preparation": null,
+   "validation": [
+    {
+     "check": "Keyword search ranks matches; confirm each result matches the requested topic and date range."
+    }
+   ],
+   "field_semantics": null,
+   "access": {
+    "credentials_required": false,
+    "authentication": "Basic public queries require no key. An optional free API key raises the daily budget; send it as api_key or Authorization: Bearer.",
+    "usage_conditions": [
+     "Keyless daily usage is shared by network/IP and can already be exhausted. A 429 can reflect daily quota or request rate; inspect the response and rate-limit headers."
+    ]
+   },
+   "hosts": [
+    "api.openalex.org"
+   ],
+   "limitations": [
+    "A shared keyless daily budget may already be exhausted. Inspect the provider response and rate-limit headers before choosing a quota recovery. Abstracts may be absent.",
+    "Abstracts and DOIs are not present for every work. Keyword searches consume the daily budget. A free optional API key has its own larger budget."
+   ],
+   "provider_check": {
+    "status": "pass",
+    "http_status": 200,
+    "checked_at": "2026-10-15T14:02:33.404Z"
+   }
+  },
+  {
+   "id": "doi_lookup",
+   "task_id": "search_scholarly_papers",
+   "example": "Get the title, authors, publication date and publisher for DOI 10.1038/nature14539",
+   "service": {
+    "name": "Crossref",
+    "service_id": "site_5267ca01-7dab-4f71-9bce-0fc8a6b3366c",
+    "path_id": "path_ab227bbc-6bf3-4d4f-9618-11f5396d4ea5",
+    "guide_url": "https://vibenate.com/v1/sites/site_5267ca01-7dab-4f71-9bce-0fc8a6b3366c?view=guide"
+   },
+   "operation": {
+    "id": "get_work",
+    "description": "Retrieve a single metadata record for a Crossref DOI.",
+    "effects": "read",
+    "input_schema": {
+     "type": "object",
+     "required": [
+      "doi"
+     ],
+     "properties": {
+      "doi": {
+       "type": "string",
+       "description": "Crossref DOI such as 10.1128/mbio.01735-25."
+      }
+     }
+    }
+   },
+   "request": {
+    "method": "GET",
+    "url": "https://api.crossref.org/works/{doi}",
+    "placeholders": [
+     "{doi}"
+    ],
+    "source_url": "https://www.crossref.org/documentation/retrieve-metadata/rest-api/"
+   },
+   "example_request": {
+    "method": "GET",
+    "url": "https://api.crossref.org/works/10.1038/nature14539",
+    "placeholders": [],
+    "source_url": "https://www.crossref.org/documentation/retrieve-metadata/rest-api/"
+   },
+   "bindings": [
+    {
+     "requirement": "doi",
+     "argument": "doi",
+     "location": "path"
+    }
+   ],
+   "preparation": null,
+   "validation": [
+    {
+     "check": "Confirm message.DOI equals the requested DOI (case-insensitive).",
+     "field": "DOI"
+    }
+   ],
+   "field_semantics": {
+    "publication_date": "Crossref publishes several dates (published, published-print, published-online, issued). State which one you report."
+   },
+   "access": {
+    "credentials_required": false,
+    "authentication": "No credentials required.",
+    "usage_conditions": []
+   },
+   "hosts": [
+    "api.crossref.org"
+   ],
+   "limitations": [],
+   "provider_check": {
+    "status": "pass",
+    "http_status": 200,
+    "checked_at": "2026-10-15T14:02:36.116Z"
+   }
+  },
+  {
+   "id": "github_repository",
+   "task_id": "read_repository_metadata",
+   "example": "Return the owner, description, stars and license of the astral-sh/uv repository on GitHub",
+   "service": {
+    "name": "GitHub",
+    "service_id": "site_74957ad8-c859-45e3-9368-c4eaa5a11193",
+    "path_id": "path_experience_github_issues",
+    "guide_url": "https://vibenate.com/v1/sites/site_74957ad8-c859-45e3-9368-c4eaa5a11193?view=guide"
+   },
+   "operation": {
+    "id": "get_repository",
+    "description": "Get one repository, including owner, description, star count and licence.",
+    "effects": "read",
+    "input_schema": {
+     "type": "object",
+     "required": [
+      "owner",
+      "repo"
+     ],
+     "properties": {
+      "owner": {
+       "type": "string"
+      },
+      "repo": {
+       "type": "string"
+      }
+     }
+    }
+   },
+   "request": {
+    "method": "GET",
+    "url": "https://api.github.com/repos/{repository}",
+    "headers": {
+     "Accept": "application/vnd.github+json"
+    },
+    "placeholders": [
+     "{repository}"
+    ],
+    "source_url": "https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28"
+   },
+   "example_request": {
+    "method": "GET",
+    "url": "https://api.github.com/repos/astral-sh/uv",
+    "headers": {
+     "Accept": "application/vnd.github+json"
+    },
+    "placeholders": [],
+    "source_url": "https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28"
+   },
+   "bindings": [
+    {
+     "requirement": "repository",
+     "argument": "repository",
+     "location": "path"
+    }
+   ],
+   "preparation": null,
+   "validation": [
+    {
+     "check": "Confirm full_name equals the requested owner/name; a null license means none was detected, not an error."
+    }
+   ],
+   "field_semantics": null,
+   "access": {
+    "credentials_required": false,
+    "authentication": "No credentials required.",
+    "usage_conditions": []
+   },
+   "hosts": [
+    "api.github.com"
+   ],
+   "limitations": [
+    "The anonymous example reads public repositories. Creating issues requires authentication and Issues write permission."
+   ],
+   "provider_check": {
+    "status": "pass",
+    "http_status": 200,
+    "checked_at": "2026-10-15T14:02:39.892Z"
+   }
+  },
+  {
+   "id": "github_issues",
+   "task_id": "manage_issues",
+   "example": "Retrieve the latest open issues from astral-sh/uv on GitHub",
+   "service": {
+    "name": "GitHub",
+    "service_id": "site_74957ad8-c859-45e3-9368-c4eaa5a11193",
+    "path_id": "path_experience_github_issues",
+    "guide_url": "https://vibenate.com/v1/sites/site_74957ad8-c859-45e3-9368-c4eaa5a11193?view=guide"
+   },
+   "operation": {
+    "id": "list_repository_issues",
+    "description": "List repository issues",
+    "effects": "read",
+    "input_schema": null
+   },
+   "request": {
+    "method": "GET",
+    "url": "https://api.github.com/repos/{repository}/issues",
+    "query": {
+     "state": "open",
+     "per_page": 30
+    },
+    "headers": {
+     "Accept": "application/vnd.github+json"
+    },
+    "placeholders": [
+     "{repository}"
+    ],
+    "source_url": "https://docs.github.com/en/rest/issues/issues.md?apiVersion=2022-11-28"
+   },
+   "example_request": {
+    "method": "GET",
+    "url": "https://api.github.com/repos/astral-sh/uv/issues",
+    "query": {
+     "state": "open",
+     "per_page": 30
+    },
+    "headers": {
+     "Accept": "application/vnd.github+json"
+    },
+    "placeholders": [],
+    "source_url": "https://docs.github.com/en/rest/issues/issues.md?apiVersion=2022-11-28"
+   },
+   "bindings": [
+    {
+     "requirement": "repository",
+     "argument": "repository",
+     "location": "path"
+    }
+   ],
+   "preparation": null,
+   "validation": [
+    {
+     "check": "Pull requests also appear in this list; exclude items with a pull_request field when only issues are wanted."
+    }
+   ],
+   "field_semantics": null,
+   "access": {
+    "credentials_required": false,
+    "authentication": "No credentials required.",
+    "usage_conditions": []
+   },
+   "hosts": [
+    "api.github.com"
+   ],
+   "limitations": [
+    "The anonymous example reads public repositories. Creating issues requires authentication and Issues write permission."
+   ],
+   "provider_check": {
+    "status": "pass",
+    "http_status": 200,
+    "checked_at": "2026-10-15T14:02:42.831Z"
+   }
+  },
+  {
+   "id": "webpage_markdown",
+   "task_id": "webpage_to_markdown",
+   "example": "Convert the webpage https://example.com to Markdown",
+   "service": {
+    "name": "file2markdown",
+    "service_id": "site_f3d0b7c6-6d44-47fb-bb80-67df3bc25dbb",
+    "path_id": "path_5540dfbb-ff37-47c6-9221-50dd0982dfef",
+    "guide_url": "https://vibenate.com/v1/sites/site_f3d0b7c6-6d44-47fb-bb80-67df3bc25dbb?view=guide"
+   },
+   "operation": {
+    "id": "convert_url",
+    "description": "Convert a public webpage URL to Markdown with the convert_url MCP tool.",
+    "effects": "read",
+    "input_schema": {
+     "type": "object",
+     "required": [
+      "url"
+     ],
+     "properties": {
+      "url": {
+       "type": "string",
+       "description": "Public URL of the webpage or supported document."
+      },
+      "filename_hint": {
+       "type": [
+        "string",
+        "null"
+       ],
+       "description": "Optional filename to help detect the input format."
+      },
+      "quality_check": {
+       "type": "string",
+       "default": "basic",
+       "description": "Keep basic for local checks; ai optionally sends converted excerpts to another provider."
+      }
+     }
+    }
+   },
+   "request": {
+    "transport": "mcp",
+    "server_url": "https://mcp.file2markdown.ai/mcp",
+    "tool": "convert_url",
+    "arguments_schema": {
+     "type": "object",
+     "required": [
+      "url"
+     ],
+     "properties": {
+      "url": {
+       "type": "string",
+       "description": "Public URL of the webpage or supported document."
+      },
+      "filename_hint": {
+       "type": [
+        "string",
+        "null"
+       ],
+       "description": "Optional filename to help detect the input format."
+      },
+      "quality_check": {
+       "type": "string",
+       "default": "basic",
+       "description": "Keep basic for local checks; ai optionally sends converted excerpts to another provider."
+      }
+     }
+    }
+   },
+   "bindings": [],
+   "preparation": null,
+   "validation": [],
+   "field_semantics": null,
+   "access": {
+    "credentials_required": false,
+    "authentication": "No credentials required.",
+    "usage_conditions": []
+   },
+   "hosts": [
+    "mcp.file2markdown.ai"
+   ],
+   "limitations": [
+    "The free tier is limited to 5 conversions per day per network IP; shared networks and hosted agents may reach that limit sooner.",
+    "Maximum download size is 25 MB on Free and 100 MB on Pro. Scanned-PDF OCR and image OCR are listed for Pro.",
+    "Web pages are converted from served HTML; JavaScript-only content may be incomplete.",
+    "The free tier permits 5 conversions per day per network. JavaScript-only content may be incomplete."
+   ],
+   "provider_check": {
+    "status": "not_run",
+    "reason": "request needs inputs or credentials"
+   }
+  },
+  {
+   "id": "send_email",
+   "task_id": "send_email",
+   "example": "Send a transactional email receipt to a customer",
+   "service": {
+    "name": "Brevo",
+    "service_id": "site_93d04624-449c-4244-8a30-ee42fbc3b900",
+    "path_id": "path_experience_brevo_email",
+    "guide_url": "https://vibenate.com/v1/sites/site_93d04624-449c-4244-8a30-ee42fbc3b900?view=guide"
+   },
+   "operation": {
+    "id": "send_transactional_email",
+    "description": "Send a transactional email",
+    "effects": "write",
+    "input_schema": {
+     "type": "object",
+     "description": "Inline HTML variant; templateId has separate conditional requirements.",
+     "required": [
+      "sender",
+      "to",
+      "subject",
+      "htmlContent"
+     ],
+     "properties": {
+      "sender": {
+       "type": "object",
+       "required": [
+        "email"
+       ],
+       "properties": {
+        "email": {
+         "type": "string",
+         "format": "email"
+        }
+       }
+      },
+      "to": {
+       "type": "array",
+       "minItems": 1,
+       "items": {
+        "type": "object",
+        "required": [
+         "email"
+        ],
+        "properties": {
+         "email": {
+          "type": "string",
+          "format": "email"
+         }
+        }
+       }
+      },
+      "subject": {
+       "type": "string"
+      },
+      "htmlContent": {
+       "type": "string"
+      }
+     }
+    }
+   },
+   "request": {
+    "method": "POST",
+    "url": "https://api.brevo.com/v3/smtp/email",
+    "headers": {
+     "api-key": "<API_KEY>",
+     "Content-Type": "application/json"
+    },
+    "body": {
+     "sender": {
+      "email": "<REGISTERED_SENDER>"
+     },
+     "to": [
+      {
+       "email": "<AUTHORIZED_RECIPIENT>"
+      }
+     ],
+     "subject": "<SUBJECT>",
+     "htmlContent": "<HTML_CONTENT>"
+    },
+    "placeholders": [
+     "<API_KEY>",
+     "<REGISTERED_SENDER>",
+     "<AUTHORIZED_RECIPIENT>",
+     "<SUBJECT>",
+     "<HTML_CONTENT>"
+    ],
+    "source_url": "https://developers.brevo.com/reference/send-transac-email"
+   },
+   "example_request": {
+    "method": "POST",
+    "url": "https://api.brevo.com/v3/smtp/email",
+    "headers": {
+     "api-key": "<API_KEY>",
+     "Content-Type": "application/json"
+    },
+    "body": {
+     "sender": {
+      "email": "<REGISTERED_SENDER>"
+     },
+     "to": [
+      {
+       "email": "<AUTHORIZED_RECIPIENT>"
+      }
+     ],
+     "subject": "<SUBJECT>",
+     "htmlContent": "<HTML_CONTENT>"
+    },
+    "placeholders": [
+     "<API_KEY>",
+     "<REGISTERED_SENDER>",
+     "<AUTHORIZED_RECIPIENT>",
+     "<SUBJECT>",
+     "<HTML_CONTENT>"
+    ],
+    "source_url": "https://developers.brevo.com/reference/send-transac-email"
+   },
+   "bindings": [],
+   "preparation": null,
+   "validation": [],
+   "field_semantics": null,
+   "access": {
+    "credentials_required": true,
+    "authentication": "api-key",
+    "usage_conditions": []
+   },
+   "hosts": [
+    "api.brevo.com"
+   ],
+   "limitations": [
+    "Sending an email contacts recipients. Configure the sending domain and registered sender before sending."
+   ],
+   "provider_check": {
+    "status": "not_run",
+    "reason": "request needs inputs or credentials"
+   }
+  },
+  {
+   "id": "channel_message",
+   "task_id": "send_channel_message",
+   "example": "Post an update in our #general Slack channel",
+   "service": {
+    "name": "Slack",
+    "service_id": "site_47a2c71b-e40e-4952-830e-b63c437283aa",
+    "path_id": "path_3881ace8-661b-4c1d-aec8-2a6aa76cafa8",
+    "guide_url": "https://vibenate.com/v1/sites/site_47a2c71b-e40e-4952-830e-b63c437283aa?view=guide"
+   },
+   "operation": {
+    "id": "chat_postMessage",
+    "description": "Post a message to a Slack channel, private group or IM channel.",
+    "effects": "write",
+    "input_schema": {
+     "type": "object",
+     "required": [
+      "channel"
+     ],
+     "properties": {
+      "channel": {
+       "type": "string",
+       "description": "An encoded ID or channel name that represents a channel, private group, or IM channel to send the message to."
+      },
+      "text": {
+       "type": "string"
+      },
+      "blocks": {
+       "type": "array"
+      }
+     }
+    }
+   },
+   "request": {
+    "method": "POST",
+    "url": "https://slack.com/api/chat.postMessage",
+    "headers": {
+     "Authorization": "Bearer <SLACK_TOKEN>",
+     "Content-Type": "application/json"
+    },
+    "body": {
+     "channel": "<CHANNEL>",
+     "text": "<TEXT>"
+    },
+    "placeholders": [
+     "<SLACK_TOKEN>",
+     "<CHANNEL>",
+     "<TEXT>"
+    ],
+    "source_url": "https://docs.slack.dev/reference/methods/chat.postMessage"
+   },
+   "example_request": {
+    "method": "POST",
+    "url": "https://slack.com/api/chat.postMessage",
+    "headers": {
+     "Authorization": "Bearer <SLACK_TOKEN>",
+     "Content-Type": "application/json"
+    },
+    "body": {
+     "channel": "<CHANNEL>",
+     "text": "<TEXT>"
+    },
+    "placeholders": [
+     "<SLACK_TOKEN>",
+     "<CHANNEL>",
+     "<TEXT>"
+    ],
+    "source_url": "https://docs.slack.dev/reference/methods/chat.postMessage"
+   },
+   "bindings": [],
+   "preparation": null,
+   "validation": [
+    {
+     "check": "Confirm ok is true and record channel and ts; ok false with not_in_channel or missing_scope names the blocker."
+    }
+   ],
+   "field_semantics": null,
+   "access": {
+    "credentials_required": null,
+    "authentication": "Authentication is unconfirmed; inspect the quoted provider source.",
+    "usage_conditions": []
+   },
+   "hosts": [
+    "slack.com"
+   ],
+   "limitations": [
+    "Posting is a write in a workspace you are authorized for; the token needs chat:write and, for a bot, membership of the channel."
+   ],
+   "provider_check": {
+    "status": "not_run",
+    "reason": "request needs inputs or credentials"
+   }
+  },
+  {
+   "id": "flight_search",
+   "task_id": "search_flights",
+   "example": "Find nonstop flights from Singapore to Tokyo with prices",
+   "service": {
+    "name": "Duffel",
+    "service_id": "site_bccf676d-f9e8-468f-a528-351dac000090",
+    "path_id": "path_484011cc-8270-457a-a79e-d55d55915f29",
+    "guide_url": "https://vibenate.com/v1/sites/site_bccf676d-f9e8-468f-a528-351dac000090?view=guide"
+   },
+   "operation": {
+    "id": "create_offer_request",
+    "description": "Search flight offers by creating an offer request with slices (origin, destination, departure date) and passengers. Does not book.",
+    "effects": "read",
+    "input_schema": {
+     "type": "object",
+     "required": [
+      "slices",
+      "passengers"
+     ],
+     "properties": {
+      "slices": {
+       "type": "array",
+       "description": "One slice for a one-way journey; two for a return trip."
+      },
+      "passengers": {
+       "type": "array"
+      },
+      "cabin_class": {
+       "type": "string"
+      },
+      "max_connections": {
+       "type": "integer",
+       "description": "0 for nonstop; default 1."
+      }
+     }
+    }
+   },
+   "request": {
+    "method": "POST",
+    "url": "https://api.duffel.com/air/offer_requests",
+    "headers": {
+     "Authorization": "Bearer <DUFFEL_ACCESS_TOKEN>",
+     "Duffel-Version": "v2",
+     "Content-Type": "application/json"
+    },
+    "body": {
+     "data": {
+      "slices": [
+       {
+        "origin": "<ORIGIN_IATA>",
+        "destination": "<DESTINATION_IATA>",
+        "departure_date": "<DEPARTURE_DATE>"
+       }
+      ],
+      "passengers": [
+       {
+        "type": "adult"
+       }
+      ],
+      "max_connections": "<MAX_CONNECTIONS>"
+     }
+    },
+    "placeholders": [
+     "<DUFFEL_ACCESS_TOKEN>",
+     "<ORIGIN_IATA>",
+     "<DESTINATION_IATA>",
+     "<DEPARTURE_DATE>",
+     "<MAX_CONNECTIONS>"
+    ],
+    "source_url": "https://duffel.com/docs/api/v2/offer-requests/create-offer-request"
+   },
+   "example_request": {
+    "method": "POST",
+    "url": "https://api.duffel.com/air/offer_requests",
+    "headers": {
+     "Authorization": "Bearer <DUFFEL_ACCESS_TOKEN>",
+     "Duffel-Version": "v2",
+     "Content-Type": "application/json"
+    },
+    "body": {
+     "data": {
+      "slices": [
+       {
+        "origin": "<ORIGIN_IATA>",
+        "destination": "<DESTINATION_IATA>",
+        "departure_date": "<DEPARTURE_DATE>"
+       }
+      ],
+      "passengers": [
+       {
+        "type": "adult"
+       }
+      ],
+      "max_connections": "<MAX_CONNECTIONS>"
+     }
+    },
+    "placeholders": [
+     "<DUFFEL_ACCESS_TOKEN>",
+     "<ORIGIN_IATA>",
+     "<DESTINATION_IATA>",
+     "<DEPARTURE_DATE>",
+     "<MAX_CONNECTIONS>"
+    ],
+    "source_url": "https://duffel.com/docs/api/v2/offer-requests/create-offer-request"
+   },
+   "bindings": [],
+   "preparation": null,
+   "validation": [
+    {
+     "check": "Confirm live_mode is true before treating offers as real availability and prices."
+    },
+    {
+     "check": "For nonstop requests set max_connections to 0 and confirm each slice has one segment."
+    }
+   ],
+   "field_semantics": null,
+   "access": {
+    "credentials_required": true,
+    "authentication": "Send your access token in the Authorization request header using the \"Bearer\" authentication scheme:",
+    "usage_conditions": []
+   },
+   "hosts": [
+    "api.duffel.com"
+   ],
+   "limitations": [
+    "Searching creates an offer request and does not book. Orders (bookings) are a separate write operation that needs explicit authority. Test-mode tokens return test offers (live_mode false)."
+   ],
+   "provider_check": {
+    "status": "not_run",
+    "reason": "request needs inputs or credentials"
+   }
+  },
+  {
+   "id": "schedule_meeting",
+   "task_id": "schedule_meetings",
+   "example": "Schedule a meeting with a customer next Tuesday",
+   "service": {
+    "name": "Calendly",
+    "service_id": "site_f42fbc4c-4bde-4107-b282-963e25d16d14",
+    "path_id": "path_686bd442-314c-427a-b6d0-21b2f79f8325",
+    "guide_url": "https://vibenate.com/v1/sites/site_f42fbc4c-4bde-4107-b282-963e25d16d14?view=guide"
+   },
+   "operation": {
+    "id": "meetings-create_invitee",
+    "description": "Create a new booking",
+    "effects": "write",
+    "input_schema": null
+   },
+   "request": {
+    "transport": "mcp",
+    "server_url": "https://mcp.calendly.com",
+    "tool": "meetings-create_invitee",
+    "arguments_schema": null
+   },
+   "bindings": [],
+   "preparation": null,
+   "validation": [],
+   "field_semantics": null,
+   "access": {
+    "credentials_required": true,
+    "authentication": "OAuth 2.1 Authorization Code + PKCE (S256)",
+    "usage_conditions": []
+   },
+   "hosts": [
+    "mcp.calendly.com"
+   ],
+   "limitations": [
+    "Creating a booking requires a paid Calendly plan. The MCP client must support Dynamic Client Registration and OAuth with PKCE."
+   ],
+   "provider_check": {
+    "status": "not_run",
+    "reason": "request needs inputs or credentials"
+   }
+  },
+  {
+   "id": "seo_competitors",
+   "task_id": "research_seo_competitors",
+   "example": "Retrieve organic search competitor data for example.com",
+   "service": {
+    "name": "Semrush",
+    "service_id": "site_992f2a10-03f8-4777-9994-1f4c1f4d8717",
+    "path_id": "path_9b023e3e-56da-4ac9-94dc-7582ab9d3f6e",
+    "guide_url": "https://vibenate.com/v1/sites/site_992f2a10-03f8-4777-9994-1f4c1f4d8717?view=guide"
+   },
+   "operation": {
+    "id": "competitors_in_organic_search",
+    "description": "Competitors in Organic Search report for a domain, through the Semrush MCP server. Each request consumes API units.",
+    "effects": "read",
+    "input_schema": null
+   },
+   "request": {
+    "transport": "mcp",
+    "server_url": "https://mcp.semrush.com/v2/mcp",
+    "tool": "competitors_in_organic_search",
+    "arguments_schema": null
+   },
+   "bindings": [],
+   "preparation": null,
+   "validation": [
+    {
+     "check": "An authenticated subscription can still lack API units; report an API-unit or entitlement error as such and do not retry."
+    }
+   ],
+   "field_semantics": null,
+   "access": {
+    "credentials_required": true,
+    "authentication": "OAuth is the default MCP server authentication approach. No additional configuration or headers are required.",
+    "usage_conditions": []
+   },
+   "hosts": [
+    "mcp.semrush.com"
+   ],
+   "limitations": [
+    "An eligible Semrush subscription and API access are required. Data availability depends on subscription and API access; each MCP request consumes API units and there is no additional MCP usage fee.",
+    "The selected Projects API capability is read-only. The documentation excludes creating projects, modifying settings, and other write actions.",
+    "Traffic and market data has a separate Trends API subscription requirement; the eligible SEO plans do not by themselves establish access to Trends API data.",
+    "Eligible plans include 50,000 API units that refresh on renewal; other plans need an API units package. Discover the exact MCP tool name with tools/list."
+   ],
+   "provider_check": {
+    "status": "not_run",
+    "reason": "request needs inputs or credentials"
+   }
+  },
+  {
+   "id": "llm_inference",
+   "task_id": "run_llm_inference",
+   "example": "Run a chat completion with a large language model",
+   "service": {
+    "name": "Together AI",
+    "service_id": "site_084c00b5-133e-4d44-b8e0-28f5b5d988a6",
+    "path_id": "path_8b9c8b25-6af7-4ac6-b117-6ac622616fa4",
+    "guide_url": "https://vibenate.com/v1/sites/site_084c00b5-133e-4d44-b8e0-28f5b5d988a6?view=guide"
+   },
+   "operation": {
+    "id": "run_llm_inference",
+    "description": "POST /v1/chat/completions",
+    "effects": "unknown",
+    "input_schema": {
+     "type": "object",
+     "required": [
+      "model",
+      "messages"
+     ],
+     "properties": {
+      "model": {
+       "type": "string",
+       "description": "Supported Together model ID"
+      },
+      "messages": {
+       "type": "array",
+       "description": "Conversation messages"
+      }
+     }
+    }
+   },
+   "request": {
+    "method": "POST",
+    "url": "https://api.together.ai/v1/chat/completions",
+    "placeholders": []
+   },
+   "example_request": {
+    "method": "POST",
+    "url": "https://api.together.ai/v1/chat/completions",
+    "placeholders": []
+   },
+   "bindings": [],
+   "preparation": null,
+   "validation": [],
+   "field_semantics": null,
+   "access": {
+    "credentials_required": null,
+    "authentication": "Authentication is unconfirmed; inspect the quoted provider source.",
+    "usage_conditions": []
+   },
+   "hosts": [
+    "api.together.ai"
+   ],
+   "limitations": [
+    "Select a supported model and check its context and account limits. Conversation content is sent to the provider.",
+    "Select a supported model and check its context and account limits. Conversation content is sent to the provider."
+   ],
+   "provider_check": {
+    "status": "not_run",
+    "reason": "request needs inputs or credentials"
+   }
+  }
+ ]
+}
