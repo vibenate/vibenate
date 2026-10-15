@@ -1,6 +1,6 @@
 # Connect Vibenate
 
-Start with https://vibenate.com/SKILL.md, use Streamable HTTP MCP at https://vibenate.com/mcp, or run `npx --yes vibenate brief` in a Node.js 22+ terminal.
+Start with https://vibenate.com/SKILL.md, use Streamable HTTP MCP at https://vibenate.com/mcp, or run `npx --yes vibenate@latest brief` in a Node.js 22+ terminal.
 
 Install the CLI with `npm install --global vibenate`. Install the JavaScript SDK with `npm install @vibenate/client`. Public discovery requires no account. Provider authentication and permissions are separate.
 

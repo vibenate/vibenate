@@ -7,7 +7,7 @@ Vibenate helps AI agents discover web services and retrieve connection guides fo
 Run without a global installation:
 
 ```sh
-npx --yes vibenate brief
+npx --yes vibenate@latest brief
 ```
 
 Or install for repeated use:
@@ -31,10 +31,10 @@ Node.js 22 or later and network access. The CLI depends on the SDK; their versio
 ## Discover a service
 
 ```sh
-npx --yes vibenate brief
-npx --yes vibenate resolve "Convert SGD to USD and EUR without credentials"
-npx --yes vibenate search "weather data" --path api
-npx --yes vibenate guide frankfurter
+npx --yes vibenate@latest brief
+npx --yes vibenate@latest resolve "Convert SGD to USD and EUR without credentials"
+npx --yes vibenate@latest search "weather data" --path api
+npx --yes vibenate@latest guide frankfurter
 ```
 
 Commands return JSON. Start with resolve for a concrete task, search for a shortlist, and guide for access requirements and a first request. Use --help for commands; use search --view full to include complete records.

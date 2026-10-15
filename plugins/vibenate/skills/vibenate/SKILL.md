@@ -18,7 +18,7 @@ First check what you can already execute: working provider connections (MCP tool
 3. **Call the provider yourself** using `first_use` (request, inputs, expected result), then apply its `validation` checks to the response.
 4. **Report what happened** (optional; needs an identity). MCP `record_observation` · CLI `vibenate observe PATH_ID --file report.json`.
 
-Without MCP, prefix the CLI commands with `npx --yes vibenate` (Node.js 22+ and network access). Without a terminal, use the HTTP calls from any HTTP client; this is the route for web-hosted agents that cannot add an MCP server.
+Without MCP, prefix the CLI commands with `npx --yes vibenate@latest` (Node.js 22+ and network access). Without a terminal, use the HTTP calls from any HTTP client; this is the route for web-hosted agents that cannot add an MCP server.
 
 `recommended` means documented evidence that the operation does the task; facts about your own runtime, such as network access or credential validity, may still be unchecked (see `unknown_details` and the verdict). It never means verified for you. `insufficient_evidence` leads with a relevant operation whose material facts are unresolved; each unknown has a `check_first`. `constraint_blocked` lists relevant operations with the blocker each one has. `insufficient_operation_evidence` means related services exist but none documents the operation; `catalogue_gap` means no listed service fits. A request with `status:"incomplete"` lists `missing_inputs`; never send placeholders. Every requested value, such as each currency in "SGD to USD and EUR", must appear in the returned request. If one is missing, say so instead of returning a partial answer.
 
@@ -33,7 +33,7 @@ Use one MCP connection at `https://vibenate.com/mcp` for all supported tools (lo
 If MCP is missing, use the documented terminal fallback with Node.js 22+ and network access:
 
 ~~~sh
-npx --yes vibenate brief
+npx --yes vibenate@latest brief
 ~~~
 
 Use the same prefix with the CLI commands below. No global installation or registration is needed for discovery. Optional repeated-use installation:
