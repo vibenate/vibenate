@@ -3,7 +3,7 @@
  "generated_at": "2026-10-15T14:03:00.893Z",
  "source": "https://vibenate.com/v1/resolve",
  "purpose": "Fallback for agents that cannot reach vibenate.com. The live API is fresher and covers every listed service; use it once reachable.",
- "usage": "Pick the entry for your task. Fill request placeholders with your task values (example_request shows them filled for the example; bindings name the arguments for dates, identifiers and filters), follow preparation first, call the provider, then apply validation. hosts lists every host the request needs, for a single permission request.",
+ "usage": "Pick the entry for your task. Fill request placeholders with your task values (example_request shows the example task with every value the resolver could bind; placeholders left in it, such as coordinates, come from preparation or your task; bindings name the arguments for dates, identifiers and filters), follow preparation first, call the provider, then apply validation. hosts lists every host the request needs, for a single permission request; if a preparation host is blocked too, include it in that request.",
  "entries": [
   {
    "id": "weather_forecast",
@@ -107,7 +107,17 @@
     },
     "source_url": "https://open-meteo.com/en/docs/geocoding-api"
    },
-   "validation": [],
+   "validation": [
+    {
+     "check": "Verify 24 aligned hourly.time entries and temperature_2m, precipitation_probability arrays, starting at the current hour."
+    },
+    {
+     "check": "Check units: temperature °C by default, precipitation probability %. Timestamps follow timezone and utc_offset_seconds."
+    },
+    {
+     "check": "Confirm the response latitude and longitude match the geocoded location."
+    }
+   ],
    "field_semantics": null,
    "access": {
     "credentials_required": false,
@@ -122,7 +132,6 @@
    ],
    "limitations": [
     "Attribution is required. Commercial use or higher volumes require the applicable subscription.",
-    "The public free endpoint is for non-commercial use; review provider usage limits.",
     "The public free endpoint is for non-commercial use; review provider usage limits."
    ],
    "provider_check": {
@@ -232,7 +241,17 @@
     },
     "source_url": "https://open-meteo.com/en/docs/geocoding-api"
    },
-   "validation": [],
+   "validation": [
+    {
+     "check": "Verify hourly.time and hourly.temperature_2m contain 72 matching entries for forecast_days=3."
+    },
+    {
+     "check": "Check units: temperature °C by default. Timestamps follow timezone and utc_offset_seconds."
+    },
+    {
+     "check": "Confirm the response latitude and longitude match the geocoded location."
+    }
+   ],
    "field_semantics": null,
    "access": {
     "credentials_required": false,
@@ -247,7 +266,6 @@
    ],
    "limitations": [
     "Attribution is required. Commercial use or higher volumes require the applicable subscription.",
-    "The public free endpoint is for non-commercial use; review provider usage limits.",
     "The public free endpoint is for non-commercial use; review provider usage limits."
    ],
    "provider_check": {
@@ -312,7 +330,14 @@
    },
    "bindings": [],
    "preparation": null,
-   "validation": [],
+   "validation": [
+    {
+     "check": "Verify date, base and a numeric rate for each requested quote currency. Multiply the amount locally."
+    },
+    {
+     "check": "Reference rates are dated, not live trading quotes; report each date."
+    }
+   ],
    "field_semantics": {
     "date": "Reference-rate publication date for each quote. Quotes can carry different dates; report each date."
    },
@@ -386,7 +411,14 @@
    },
    "bindings": [],
    "preparation": null,
-   "validation": [],
+   "validation": [
+    {
+     "check": "Verify date, base and a numeric rate for the requested quote currency."
+    },
+    {
+     "check": "Reference rates are dated, not live trading quotes; report the date."
+    }
+   ],
    "field_semantics": {
     "date": "Reference-rate publication date for each quote. Quotes can carry different dates; report each date."
    },
@@ -989,7 +1021,11 @@
    },
    "bindings": [],
    "preparation": null,
-   "validation": [],
+   "validation": [
+    {
+     "check": "Confirm the response contains every requested value for the requested entity; an HTTP 200 alone is not success."
+    }
+   ],
    "field_semantics": null,
    "access": {
     "credentials_required": false,
@@ -1129,7 +1165,11 @@
    },
    "bindings": [],
    "preparation": null,
-   "validation": [],
+   "validation": [
+    {
+     "check": "Confirm the provider reports that the write succeeded (an identifier or ok flag) before telling the user it is done."
+    }
+   ],
    "field_semantics": null,
    "access": {
     "credentials_required": true,
@@ -1225,8 +1265,8 @@
    ],
    "field_semantics": null,
    "access": {
-    "credentials_required": null,
-    "authentication": "Authentication is unconfirmed; inspect the quoted provider source.",
+    "credentials_required": true,
+    "authentication": "Needs a provider credential in the Authorization header; see the cited source for how to obtain it.",
     "usage_conditions": []
    },
    "hosts": [
@@ -1397,7 +1437,11 @@
    },
    "bindings": [],
    "preparation": null,
-   "validation": [],
+   "validation": [
+    {
+     "check": "Confirm the provider reports that the write succeeded (an identifier or ok flag) before telling the user it is done."
+    }
+   ],
    "field_semantics": null,
    "access": {
     "credentials_required": true,
@@ -1508,7 +1552,11 @@
    },
    "bindings": [],
    "preparation": null,
-   "validation": [],
+   "validation": [
+    {
+     "check": "Confirm the provider reports that the write succeeded (an identifier or ok flag) before telling the user it is done."
+    }
+   ],
    "field_semantics": null,
    "access": {
     "credentials_required": null,
@@ -1519,7 +1567,6 @@
     "api.together.ai"
    ],
    "limitations": [
-    "Select a supported model and check its context and account limits. Conversation content is sent to the provider.",
     "Select a supported model and check its context and account limits. Conversation content is sent to the provider."
    ],
    "provider_check": {
