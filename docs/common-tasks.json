@@ -1,6 +1,6 @@
 {
  "schema_version": "1.0",
- "generated_at": "2026-10-15T14:03:00.893Z",
+ "generated_at": "2026-10-27T07:41:33.874Z",
  "source": "https://vibenate.com/v1/resolve",
  "purpose": "Fallback for agents that cannot reach vibenate.com. The live API is fresher and covers every listed service; use it once reachable.",
  "usage": "Pick the entry for your task. Fill request placeholders with your task values (example_request shows the example task with every value the resolver could bind; placeholders left in it, such as coordinates, come from preparation or your task; bindings name the arguments for dates, identifiers and filters), follow preparation first, call the provider, then apply validation. hosts lists every host the request needs, for a single permission request; if a preparation host is blocked too, include it in that request.",
@@ -499,8 +499,8 @@
     "url": "https://earthquake.usgs.gov/fdsnws/event/1/query",
     "query": {
      "format": "geojson",
-     "starttime": "2026-10-08T00:00:00.000",
-     "endtime": "2026-10-14T23:59:59.999",
+     "starttime": "2026-10-20T00:00:00.000",
+     "endtime": "2026-10-26T23:59:59.999",
      "minmagnitude": "5",
      "orderby": "time"
     },
