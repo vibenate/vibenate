@@ -45,8 +45,8 @@ Use it to find services for a task, compare documented interfaces and access req
 
 | Package | Purpose | Current release |
 | --- | --- | --- |
-| [vibenate](https://www.npmjs.com/package/vibenate) | Terminal CLI | 2.8.5 |
-| [@vibenate/client](https://www.npmjs.com/package/@vibenate/client) | JavaScript SDK; also includes the underlying CLI runtime | 2.8.4 |
+| [vibenate](https://www.npmjs.com/package/vibenate) | Terminal CLI | 2.9.0 |
+| [@vibenate/client](https://www.npmjs.com/package/@vibenate/client) | JavaScript SDK; also includes the underlying CLI runtime | 2.9.0 |
 
 Node.js 22 or later and network access. The CLI depends on the SDK; their version numbers can differ. Both connect to the hosted service at https://vibenate.com.
 

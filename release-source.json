@@ -10,7 +10,7 @@
   "repository": "https://github.com/vibenate/vibenate",
   "sha256": {
     "LICENSE": "8c24336eda267f04e5c46b5a609da2dcc27dcdd5e52abb11dde9a33901b45763",
-    "README.md": "9a22099367e81e13cd4bb9366d423e407d5202280b512e642c4b4eb2c3892792",
+    "README.md": "04d2bb3745b7fad7026e03a33433a00be51810b7963b94c620c3ce6e6b9a4fdf",
     "assignment.d.mts": "0398339577af9f188835dbba131c915fb7bcc783eefa8339e4cefc2b00e19cc8",
     "assignment.mjs": "d496c4a05a48daa1b9903d9606264ffadcfd3581083c20a7c974e5d44ab7e3fe",
     "cli.d.mts": "61c699e57c47f596e92f6e07d78ec9aa77457a51e6907998faec9d1df785388e",
@@ -23,7 +23,7 @@
     "native-worker.mjs": "3f8af5afc8d29d9a103dd1f51a5fed8d3bec1d613db9538f31baba7fe25642b3",
     "package.json": "8769deae0f82f751d0011e44f4e22e0ed63dad481275e902d02b4d2e88a5888f",
     "packages/cli/LICENSE": "8c24336eda267f04e5c46b5a609da2dcc27dcdd5e52abb11dde9a33901b45763",
-    "packages/cli/README.md": "181dd1dc97b3e7b161f3d941418f07e0f79292f28056ff17e02334fb4d479a1e",
+    "packages/cli/README.md": "9cda38c2d937e1fbc231250c0e023b1b3f74adbdf9927a969fe7f86a2662c81a",
     "packages/cli/cli.mjs": "14450991b5ddef93d9bf41e8bff2846313a0f19ab8ba8741881aea033d60ae5a",
     "packages/cli/package.json": "15c95966675dacd975994a0e9cba89bdb36d8af8228a8403dfa60ba9ea7f5ad6",
     "types.d.mts": "2c0217a5bee295d7ea145b9691d8ad68bd9868f314ec54946faf90a5d01e3b8b"

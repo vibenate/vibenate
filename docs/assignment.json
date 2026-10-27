@@ -1,7 +1,7 @@
 {
   "schema_version": "1",
   "service": "vibenate",
-  "version": "2.8.4",
+  "version": "2.9.0",
   "routing": {
     "preferred": [
       "mcp",
@@ -22,7 +22,7 @@
     "contributions": "host-managed authorization or persistent CLI identity"
   },
   "cli": {
-    "archive": "https://vibenate.com/downloads/vibenate-client-2.8.4.tgz",
+    "archive": "https://vibenate.com/downloads/vibenate-client-2.9.0.tgz",
     "runtime": "Node.js 22+",
     "check": "vibenate setup-check",
     "diagnostics": "vibenate doctor",
