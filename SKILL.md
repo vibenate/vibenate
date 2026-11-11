@@ -13,7 +13,7 @@ Your goal is to complete the user's task, not to use Vibenate. Finding a service
 
 First check what you can already execute: working provider connections (MCP tools, an authenticated CLI) and whether your runtime can make outbound HTTP requests. Reuse a working, authorized connection that supports the operation before any new setup.
 
-**Reach Vibenate first, once.** Use connected Vibenate MCP tools if you have them. Otherwise send one `GET https://vibenate.com/v1/agent-brief` from your HTTP client. If it fails (unresolved host, blocked or allowlisted network, proxy refusal, timeout), do not retry, and do not try the CLI or a browser instead: they need the same host. Then, straight away:
+**Reach Vibenate first, once.** Use connected Vibenate MCP tools if you have them. Otherwise send step 1 below (`POST https://vibenate.com/v1/resolve`) from your HTTP client; it also shows whether vibenate.com is reachable, so no separate check is needed. If it fails (unresolved host, blocked or allowlisted network, proxy refusal, timeout), do not retry, and do not try the CLI or a browser instead: they need the same host. Then, straight away:
 
 - Read the fallback at `https://raw.githubusercontent.com/vibenate/vibenate/main/docs/common-tasks.json` (mirror: `https://cdn.jsdelivr.net/gh/vibenate/vibenate@main/docs/common-tasks.json`). If an entry matches your task, use its request, preparation and validation, and note its `hosts`. If a preparation host is blocked too, include it in the access request; use a well-known value instead (such as a city's coordinates) only if you say where it came from.
 - Ask the user once, early, for everything the task needs, in one message: "To complete this I need network access to vibenate.com and [the provider hosts from the entry or guide]. Please allow these hosts in this workspace's network settings (an organisation admin may need to). Adding the Vibenate connector https://vibenate.com/mcp would replace only the vibenate.com part; the provider hosts are still needed." Ask before spending time on other routes.
@@ -22,11 +22,11 @@ First check what you can already execute: working provider connections (MCP tool
 Four steps. The first three need no account.
 
 1. **Match the task.** MCP `resolve_task` · CLI `vibenate resolve "TASK"` · HTTP `POST https://vibenate.com/v1/resolve` with `{"query":"TASK"}`. Read `status`, then the recommendation's `verdict` and `next_actions`. The recommendation already carries `request_template`, `preparation` and `validation`.
-2. **Get the service guide when you need more** (setup steps, other interfaces, full evidence). MCP `inspect_site` with `view:"guide"` · CLI `vibenate guide SERVICE_ID` · HTTP `GET https://vibenate.com/v1/sites/SERVICE_ID?view=guide`.
+2. **Get the service guide when you need more** (setup steps, other interfaces, full evidence). Follow the candidate's `guide_url`: it already names the interface (`path_id`) and your task, so the guide returns the first request in one call. MCP `inspect_site` with `view:"guide"` and `context:{"query":"TASK","path_id":"PATH_ID"}` · CLI `vibenate guide SERVICE_ID --path PATH_ID` · HTTP `GET https://vibenate.com/v1/sites/SERVICE_ID?view=guide&path_id=PATH_ID&query=TASK`.
 3. **Call the provider yourself.** If `request_template.status` is `incomplete` (verdict `prepare_inputs`), first send `preparation.request` and fill each `missing_inputs` value from its response; never send placeholders. Then send the request and apply every `validation` check to the response.
 4. **Report what happened** (optional; needs an identity). MCP `record_observation` · CLI `vibenate observe PATH_ID --file report.json`.
 
-Without MCP, use the HTTP calls from any HTTP client; this works for web-hosted and sandboxed agents and needs nothing installed. The CLI (`npx --yes vibenate@latest`, Node.js 22+) is an optional convenience that uses the same host, not a fallback when vibenate.com is unreachable.
+Without MCP, use the HTTP calls from any HTTP client; this works for web-hosted and sandboxed agents and needs nothing installed. The CLI (Node.js 22+) is an optional convenience that uses the same host, not a fallback when vibenate.com is unreachable. For more than one command, install it once (`npm install --global vibenate`) instead of `npx --yes vibenate@latest`, which resolves the package again on every command and takes several seconds each time.
 
 Resolver statuses:
 
@@ -43,7 +43,7 @@ The rest of this file is reference for task work. Contribution, identity, delega
 
 ## Start
 
-Use a working Vibenate MCP connection, the HTTP API or the CLI. Do not reinstall or visit a setup page when tools already work. Discover deferred MCP tools through your host's tool search; custom runners use tools/list. On first contact, call get_agent_brief (CLI: vibenate brief), then continue the original task. check_connection (setup-check) checks discovery; check_contribution_connection checks identity and scopes for a contribution.
+Use a working Vibenate MCP connection, the HTTP API or the CLI. Do not reinstall or visit a setup page when tools already work. Discover deferred MCP tools through your host's tool search; custom runners use tools/list. Start with resolve_task (CLI: vibenate resolve "TASK") for the original task. get_agent_brief (CLI: vibenate brief) is optional: it summarises the registry and how to participate. check_connection (setup-check) checks discovery; check_contribution_connection checks identity and scopes for a contribution.
 
 Use one MCP connection at `https://vibenate.com/mcp` for all supported tools (local bridge: `vibenate mcp`). An agent that only finds services and reads guides can use `https://vibenate.com/mcp?catalogue=core`, which lists the nine discovery tools with compact schemas. Public discovery and connection guides need no sign-in. Contributions and private features require a connected identity and appropriate permissions; connect that identity on the same MCP connection. Use `inspect_documentation` again with the returned `handle_id` and `offset:next_offset` to continue a long document.
 
@@ -52,10 +52,10 @@ Without MCP, use the HTTP API at https://vibenate.com/v1; it needs nothing insta
 If you prefer a terminal, the CLI wraps the same API (Node.js 22+ and network access to vibenate.com):
 
 ~~~sh
-npx --yes vibenate@latest brief
+npx --yes vibenate@latest resolve "TASK"
 ~~~
 
-Use the same prefix with the CLI commands below. No global installation or registration is needed for discovery. Public CLI `request` calls also work without registration or a valid session. Optional repeated-use installation:
+Use the same prefix with the CLI commands below. No global installation or registration is needed for discovery. Public CLI `request` calls also work without registration or a valid session. Each `npx` run resolves the package again; for repeated use, install once:
 
 ~~~sh
 npm install --global vibenate

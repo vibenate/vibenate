@@ -4,17 +4,17 @@ Vibenate helps AI agents discover web services and retrieve connection guides fo
 
 ## Install the CLI
 
-Run without a global installation:
-
-```sh
-npx --yes vibenate@latest brief
-```
-
-Or install for repeated use:
+Install once for repeated use; each command then starts without resolving the package again:
 
 ```sh
 npm install --global vibenate
-vibenate brief
+vibenate resolve "Convert SGD to USD and EUR without credentials"
+```
+
+Or run a single command without installing (slower: `npx` resolves the package on every run):
+
+```sh
+npx --yes vibenate@latest resolve "Convert SGD to USD and EUR without credentials"
 ```
 
 Use it to find services for a task, compare documented interfaces and access requirements, and retrieve a connection guide before calling a provider.
@@ -23,15 +23,14 @@ Use it to find services for a task, compare documented interfaces and access req
 
 | Package | Purpose | Current release |
 | --- | --- | --- |
-| [vibenate](https://www.npmjs.com/package/vibenate) | Terminal CLI | 2.9.0 |
-| [@vibenate/client](https://www.npmjs.com/package/@vibenate/client) | JavaScript SDK; also includes the underlying CLI runtime | 2.9.0 |
+| [vibenate](https://www.npmjs.com/package/vibenate) | Terminal CLI | 2.9.1 |
+| [@vibenate/client](https://www.npmjs.com/package/@vibenate/client) | JavaScript SDK; also includes the underlying CLI runtime | 2.9.1 |
 
 Node.js 22 or later and network access. The CLI depends on the SDK; their version numbers can differ. Both connect to the hosted service at https://vibenate.com.
 
 ## Discover a service
 
 ```sh
-npx --yes vibenate@latest brief
 npx --yes vibenate@latest resolve "Convert SGD to USD and EUR without credentials"
 npx --yes vibenate@latest search "weather data" --path api
 npx --yes vibenate@latest guide frankfurter
@@ -73,8 +72,8 @@ For authorized contributions, register once with vibenate register --name "Agent
 ## Other connection methods
 
 - **Skill:** give your agent: Set up using https://raw.githubusercontent.com/vibenate/vibenate/main/SKILL.md. Step-by-step setup for each agent app: https://vibenate.com/connect.
-- **MCP:** Streamable HTTP at https://vibenate.com/mcp. Start with get_agent_brief; use resolve_task or inspect_site for discovery and guides. One connection exposes all supported tools; discovery-only agents can use https://vibenate.com/mcp?catalogue=core. Public discovery needs no sign-in; contributions and private features require a connected identity and appropriate permissions on the same connection.
-- **HTTP API:** begin with GET https://vibenate.com/v1/agent-brief and POST /v1/resolve with a JSON query. [API documentation](https://vibenate.com/docs) and [OpenAPI schema](https://vibenate.com/v1/openapi.json).
+- **MCP:** Streamable HTTP at https://vibenate.com/mcp. Start with resolve_task, then follow its guide_url (inspect_site with view=guide); get_agent_brief is optional. One connection exposes all supported tools; discovery-only agents can use https://vibenate.com/mcp?catalogue=core. Public discovery needs no sign-in; contributions and private features require a connected identity and appropriate permissions on the same connection.
+- **HTTP API:** begin with POST https://vibenate.com/v1/resolve with a JSON query, then follow the recommendation's guide_url. [API documentation](https://vibenate.com/docs) and [OpenAPI schema](https://vibenate.com/v1/openapi.json).
 
 Order of routes: connected MCP tools; otherwise the HTTP API from any client, which needs nothing installed. The CLI is an optional convenience over the same host, not a fallback when vibenate.com is unreachable; for that, use https://raw.githubusercontent.com/vibenate/vibenate/main/docs/common-tasks.json. An existing working MCP or CLI connection can be used immediately. A Skill supplies instructions; the host must provide tools or HTTP access. Installing a CLI on another computer does not connect a web-hosted agent.
 

@@ -10,12 +10,12 @@
   "repository": "https://github.com/vibenate/vibenate",
   "sha256": {
     "LICENSE": "8c24336eda267f04e5c46b5a609da2dcc27dcdd5e52abb11dde9a33901b45763",
-    "README.md": "04d2bb3745b7fad7026e03a33433a00be51810b7963b94c620c3ce6e6b9a4fdf",
+    "README.md": "807577d5d6b367125b3e761e8435fc9aff6c05dac8c6259c377222d9641d0684",
     "assignment.d.mts": "0398339577af9f188835dbba131c915fb7bcc783eefa8339e4cefc2b00e19cc8",
     "assignment.mjs": "d496c4a05a48daa1b9903d9606264ffadcfd3581083c20a7c974e5d44ab7e3fe",
     "cli.d.mts": "61c699e57c47f596e92f6e07d78ec9aa77457a51e6907998faec9d1df785388e",
     "cli.mjs": "96ec532b8dfd8d8daa3a0ce3782bc1299359b94b792133f09335eb91582c3d38",
-    "connection-guide.md": "f2508754d4f2dff62de8de976a577e387c16ba0e3676249aeca727cb7cdd59d0",
+    "connection-guide.md": "4688b7cf06da929c852cea19eda0737f969922d8f1314c2ee95c6a78cbd77ed7",
     "index.d.mts": "38adb37d9ef27c63b3375a6d69ce3a01e1980276f710b320c30011c938490abf",
     "index.mjs": "10b16e18496366d3db31cface51a46e61695ad8fb37e8030ebfc55992927bb6f",
     "local-mcp.mjs": "089de6ffcca81b0ee6ab6fb76821a5bfb84cddaabb3e7f450759c627f6465f18",
@@ -23,7 +23,7 @@
     "native-worker.mjs": "3f8af5afc8d29d9a103dd1f51a5fed8d3bec1d613db9538f31baba7fe25642b3",
     "package.json": "8769deae0f82f751d0011e44f4e22e0ed63dad481275e902d02b4d2e88a5888f",
     "packages/cli/LICENSE": "8c24336eda267f04e5c46b5a609da2dcc27dcdd5e52abb11dde9a33901b45763",
-    "packages/cli/README.md": "308ed6ec4c6144553ebbf15f31d145e3639a74c6762868783033465af206b301",
+    "packages/cli/README.md": "72ce58c6b8bbe78ee9a4989f88fce7d0defa6e5fc79207036e0dedb587ccb555",
     "packages/cli/cli.mjs": "14450991b5ddef93d9bf41e8bff2846313a0f19ab8ba8741881aea033d60ae5a",
     "packages/cli/package.json": "15c95966675dacd975994a0e9cba89bdb36d8af8228a8403dfa60ba9ea7f5ad6",
     "types.d.mts": "2c0217a5bee295d7ea145b9691d8ad68bd9868f314ec54946faf90a5d01e3b8b"

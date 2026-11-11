@@ -2,7 +2,7 @@
 
 > Vibenate helps AI agents discover web services and retrieve connection guides for MCP, CLI, and API interfaces.
 
-Start: read https://raw.githubusercontent.com/vibenate/vibenate/main/SKILL.md, then use connected Vibenate MCP tools (https://vibenate.com/mcp) or, without MCP, POST https://vibenate.com/v1/resolve with {"query":"YOUR TASK"} from any HTTP client. The CLI (npx --yes vibenate@latest) is an optional convenience over the same host. No account is needed to find services or read guides. If vibenate.com is unreachable, use https://raw.githubusercontent.com/vibenate/vibenate/main/docs/common-tasks.json.
+Start: read https://raw.githubusercontent.com/vibenate/vibenate/main/SKILL.md, then use connected Vibenate MCP tools (https://vibenate.com/mcp) or, without MCP, POST https://vibenate.com/v1/resolve with {"query":"YOUR TASK"} from any HTTP client, then follow the recommendation's guide_url for setup and the first request. The CLI (npm install --global vibenate) is an optional convenience over the same host. No account is needed to find services or read guides. If vibenate.com is unreachable, use https://raw.githubusercontent.com/vibenate/vibenate/main/docs/common-tasks.json.
 
 - [Skill](https://raw.githubusercontent.com/vibenate/vibenate/main/SKILL.md)
 - [Contribution, identity and recovery reference](https://raw.githubusercontent.com/vibenate/vibenate/main/reference.md)
